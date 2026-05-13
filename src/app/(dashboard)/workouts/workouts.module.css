@@ -60,12 +60,145 @@
 .removeBtn { background:transparent; border:none; color:var(--text-muted); cursor:pointer; padding:4px; border-radius:var(--radius-sm); }
 .removeBtn:hover { color:var(--accent-danger); }
 
-/* Sets */
+/* ========================================
+   PROGRESSIVE OVERLOAD BADGE
+   ======================================== */
+
+.overloadBadge {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  margin: 0 var(--space-md) var(--space-sm);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(6, 182, 212, 0.08));
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.overloadIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: white;
+  margin-top: 2px;
+}
+
+.overloadContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.overloadLast {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.overloadLast strong {
+  color: var(--text-primary);
+}
+
+.overloadMeta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.overloadSuggestion {
+  font-size: 0.8125rem;
+  color: var(--accent-secondary);
+  line-height: 1.4;
+}
+
+.overloadSuggestion strong {
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+}
+
+.overloadIncrease {
+  font-size: 0.75rem;
+  color: var(--accent-success);
+  font-weight: 700;
+}
+
+/* ========================================
+   SETS — com checkbox de conclusão
+   ======================================== */
+
 .setsSection { padding:0 var(--space-md) var(--space-md); overflow:hidden; }
-.setsHeader { display:grid; grid-template-columns:40px 1fr 1fr; gap:var(--space-sm); font-size:0.75rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; padding-bottom:var(--space-xs); border-bottom:1px solid var(--border-subtle); margin-bottom:var(--space-sm); }
-.setRow { display:grid; grid-template-columns:40px 1fr 1fr; gap:var(--space-sm); align-items:center; margin-bottom:var(--space-xs); }
+.setsHeader {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr 36px;
+  gap: var(--space-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: var(--space-sm);
+}
+
+.setRow {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr 36px;
+  gap: var(--space-sm);
+  align-items: center;
+  margin-bottom: var(--space-xs);
+  transition: opacity var(--transition-fast);
+}
+
+.setCompleted {
+  opacity: 0.5;
+}
+
+.setCompleted .setInput {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
 .setNumber { font-family:var(--font-heading); font-size:0.875rem; font-weight:700; color:var(--accent-primary); text-align:center; }
 .setInput { padding:var(--space-xs) var(--space-sm); font-size:0.875rem; background:var(--bg-primary); }
+
+/* Checkbox button for set completion */
+.checkBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--border-default);
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.checkBtn:hover {
+  border-color: var(--accent-success);
+  color: var(--accent-success);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.checkBtnDone {
+  border-color: var(--accent-success);
+  background: var(--accent-success);
+  color: white;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.checkBtnDone:hover {
+  background: rgba(16, 185, 129, 0.8);
+  color: white;
+}
 
 /* Biometry */
 .biometryCard { background:var(--bg-secondary); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:var(--space-lg); margin-bottom:var(--space-md); }

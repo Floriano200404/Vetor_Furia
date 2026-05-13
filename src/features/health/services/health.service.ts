@@ -49,17 +49,31 @@ export function calculateWorkoutXP(exercises: Exercise[]): number {
  * Get the last recorded load for a given exercise name.
  * Used for Progressive Overload comparison.
  */
-export function getLastExerciseLoad(exerciseName: string): { avgWeight: number; maxWeight: number; date: number } | null {
-  const workouts = getWorkouts();
+export function getLastExerciseLoad(exerciseName: string): {
+  avgWeight: number;
+  maxWeight: number;
+  avgReps: number;
+  totalSets: number;
+  date: number;
+  suggestedWeight: number;
+} | null {
+  const workouts = getWorkouts().sort((a, b) => b.date - a.date);
   for (const w of workouts) {
     const ex = w.exercises.find((e) => e.name === exerciseName);
     if (ex && ex.sets.length > 0) {
       const weights = ex.sets.map((s) => s.weight).filter((w) => w > 0);
+      const reps = ex.sets.map((s) => s.reps).filter((r) => r > 0);
       if (weights.length > 0) {
+        const maxWeight = Math.max(...weights);
+        // Suggest +2.5kg or +5%, whichever is greater (rounded to 0.5)
+        const increment = Math.max(2.5, Math.round((maxWeight * 0.05) * 2) / 2);
         return {
-          avgWeight: weights.reduce((a, b) => a + b, 0) / weights.length,
-          maxWeight: Math.max(...weights),
+          avgWeight: Math.round((weights.reduce((a, b) => a + b, 0) / weights.length) * 10) / 10,
+          maxWeight,
+          avgReps: reps.length > 0 ? Math.round(reps.reduce((a, b) => a + b, 0) / reps.length) : 0,
+          totalSets: ex.sets.length,
           date: w.date,
+          suggestedWeight: Math.round((maxWeight + increment) * 10) / 10,
         };
       }
     }
