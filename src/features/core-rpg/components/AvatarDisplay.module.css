@@ -1,0 +1,97 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.glowRing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-primary-glow) 0%, transparent 70%);
+  animation: pulse-glow 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sm .glowRing {
+  width: 64px;
+  height: 64px;
+}
+
+.md .glowRing {
+  width: 100px;
+  height: 100px;
+}
+
+.lg .glowRing {
+  width: 180px;
+  height: 180px;
+}
+
+.avatarWrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.avatar {
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--accent-primary);
+  background: var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-glow-purple);
+}
+
+.sm .avatar {
+  border-width: 1.5px;
+}
+
+.lg .avatar {
+  border-width: 3px;
+}
+
+.avatarInner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-elevated) 100%);
+}
+
+.avatarEmoji {
+  user-select: none;
+}
+
+.sm .avatarEmoji {
+  font-size: 1.5rem;
+}
+
+.md .avatarEmoji {
+  font-size: 2.5rem;
+}
+
+.lg .avatarEmoji {
+  font-size: 4.5rem;
+}
+
+.stageName {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; transform: translate(-50%, -55%) scale(1); }
+  50% { opacity: 0.8; transform: translate(-50%, -55%) scale(1.1); }
+}

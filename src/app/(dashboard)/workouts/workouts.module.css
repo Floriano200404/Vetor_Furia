@@ -1,0 +1,84 @@
+.page { display:flex; flex-direction:column; gap:var(--space-xl); max-width:900px; margin:0 auto; }
+.header { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--space-md); flex-wrap:wrap; }
+.title { font-size:1.75rem; font-weight:800; }
+.tabs { display:flex; gap:var(--space-xs); background:var(--bg-secondary); border-radius:var(--radius-lg); padding:4px; border:1px solid var(--border-subtle); }
+.tab { display:flex; align-items:center; gap:var(--space-sm); padding:var(--space-sm) var(--space-md); border-radius:var(--radius-md); border:none; background:transparent; color:var(--text-secondary); font-family:var(--font-body); font-size:0.875rem; font-weight:600; cursor:pointer; transition:all var(--transition-fast); }
+.tab:hover { color:var(--text-primary); }
+.tabActive { background:var(--bg-elevated); color:var(--text-primary); box-shadow:var(--shadow-sm); }
+
+.emptyState { display:flex; flex-direction:column; align-items:center; gap:var(--space-md); padding:var(--space-3xl); text-align:center; }
+.emptyState h3 { font-size:1.125rem; color:var(--text-secondary); }
+.emptyState p { font-size:0.875rem; color:var(--text-muted); }
+
+/* Workout Card */
+.workoutCard { background:var(--bg-secondary); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:var(--space-lg); margin-bottom:var(--space-md); transition:border-color var(--transition-fast); }
+.workoutCard:hover { border-color:var(--border-default); }
+.workoutHeader { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-md); }
+.workoutName { font-family:var(--font-heading); font-size:1.125rem; font-weight:700; margin-bottom:4px; }
+.workoutMeta { display:flex; gap:var(--space-md); font-size:0.8125rem; color:var(--text-secondary); align-items:center; }
+.workoutMeta span { display:flex; align-items:center; gap:4px; }
+.xpBadge { color:var(--accent-success) !important; font-family:var(--font-heading); font-weight:700; }
+.workoutActions { display:flex; align-items:center; gap:var(--space-sm); }
+.workoutDate { font-size:0.75rem; color:var(--text-muted); }
+.deleteBtn { background:transparent; border:none; color:var(--text-muted); cursor:pointer; padding:6px; border-radius:var(--radius-sm); transition:all var(--transition-fast); }
+.deleteBtn:hover { color:var(--accent-danger); background:rgba(239,68,68,0.1); }
+.exerciseList { display:flex; flex-direction:column; gap:4px; }
+.exerciseSummary { display:flex; justify-content:space-between; padding:var(--space-xs) var(--space-sm); border-radius:var(--radius-sm); font-size:0.875rem; }
+.exerciseSummary:hover { background:var(--bg-elevated); }
+.exerciseSets { color:var(--text-muted); font-size:0.8125rem; }
+
+/* Form */
+.formSection { background:var(--bg-secondary); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:var(--space-xl); }
+.formHeader { display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-lg); }
+.formHeader h3 { font-family:var(--font-heading); font-size:1.25rem; font-weight:700; }
+.formGrid { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-md); }
+.formField { display:flex; flex-direction:column; gap:4px; }
+.formField label { font-size:0.8125rem; font-weight:600; color:var(--text-secondary); }
+.formActions { display:flex; justify-content:flex-end; gap:var(--space-md); margin-top:var(--space-xl); padding-top:var(--space-lg); border-top:1px solid var(--border-subtle); }
+
+/* Catalog */
+.catalogSection { margin-top:var(--space-xl); }
+.catalogTitle { font-family:var(--font-heading); font-size:0.9375rem; font-weight:700; margin-bottom:var(--space-md); }
+.muscleGroups { display:flex; flex-direction:column; gap:var(--space-lg); }
+.muscleGroup { }
+.muscleGroupTitle { font-size:0.75rem; font-weight:700; color:var(--accent-warning); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:var(--space-sm); }
+.catalogGrid { display:flex; flex-wrap:wrap; gap:var(--space-xs); }
+.catalogItem { display:flex; align-items:center; justify-content:space-between; gap:var(--space-sm); padding:6px 12px; background:var(--bg-elevated); border:1px solid var(--border-subtle); border-radius:var(--radius-md); font-family:inherit; font-size:0.8125rem; color:var(--text-secondary); cursor:pointer; transition:all var(--transition-fast); }
+.catalogItem:hover { border-color:var(--border-active); color:var(--text-primary); background:var(--bg-hover); }
+
+/* Selected exercises */
+.selectedSection { margin-top:var(--space-xl); }
+.selectedExercise { background:var(--bg-elevated); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); margin-bottom:var(--space-sm); overflow:hidden; }
+.selectedHeader { display:flex; justify-content:space-between; align-items:center; padding:var(--space-md); cursor:pointer; }
+.selectedHeader:hover { background:var(--bg-hover); }
+.selectedInfo { display:flex; align-items:center; gap:var(--space-md); }
+.exerciseGif { width:48px; height:48px; border-radius:var(--radius-md); object-fit:cover; background:var(--bg-primary); }
+.exerciseName { font-weight:600; font-size:0.9375rem; display:block; }
+.exerciseMuscle { font-size:0.75rem; color:var(--text-muted); }
+.selectedActions { display:flex; align-items:center; gap:var(--space-sm); color:var(--text-muted); }
+.setCount { font-size:0.8125rem; font-weight:600; }
+.removeBtn { background:transparent; border:none; color:var(--text-muted); cursor:pointer; padding:4px; border-radius:var(--radius-sm); }
+.removeBtn:hover { color:var(--accent-danger); }
+
+/* Sets */
+.setsSection { padding:0 var(--space-md) var(--space-md); overflow:hidden; }
+.setsHeader { display:grid; grid-template-columns:40px 1fr 1fr; gap:var(--space-sm); font-size:0.75rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; padding-bottom:var(--space-xs); border-bottom:1px solid var(--border-subtle); margin-bottom:var(--space-sm); }
+.setRow { display:grid; grid-template-columns:40px 1fr 1fr; gap:var(--space-sm); align-items:center; margin-bottom:var(--space-xs); }
+.setNumber { font-family:var(--font-heading); font-size:0.875rem; font-weight:700; color:var(--accent-primary); text-align:center; }
+.setInput { padding:var(--space-xs) var(--space-sm); font-size:0.875rem; background:var(--bg-primary); }
+
+/* Biometry */
+.biometryCard { background:var(--bg-secondary); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:var(--space-lg); margin-bottom:var(--space-md); }
+.biometryHeader { display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-md); }
+.biometryDate { font-size:0.875rem; color:var(--text-secondary); }
+.biometryStats { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-md); margin-bottom:var(--space-md); }
+.bioStat { display:flex; flex-direction:column; align-items:center; gap:2px; padding:var(--space-md); background:var(--bg-elevated); border-radius:var(--radius-md); }
+.bioValue { font-family:var(--font-heading); font-size:1.25rem; font-weight:700; color:var(--text-primary); }
+.bioLabel { font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; }
+.biomarkersGrid { display:grid; grid-template-columns:repeat(2,1fr); gap:var(--space-sm); padding-top:var(--space-md); border-top:1px solid var(--border-subtle); }
+.biomarkerItem { display:flex; justify-content:space-between; padding:var(--space-xs) var(--space-sm); font-size:0.8125rem; }
+.biomarkerLabel { color:var(--text-secondary); }
+.biomarkerValue { font-weight:600; color:var(--text-primary); }
+.biomarkersForm { display:grid; grid-template-columns:repeat(2,1fr); gap:var(--space-md); }
+
+@media (max-width:640px) { .formGrid,.biomarkersForm { grid-template-columns:1fr; } .biometryStats { grid-template-columns:1fr; } .tabs { width:100%; } }

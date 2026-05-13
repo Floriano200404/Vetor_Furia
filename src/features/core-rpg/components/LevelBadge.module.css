@@ -1,0 +1,77 @@
+.badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-hover));
+  color: white;
+  font-family: var(--font-heading);
+  box-shadow: var(--shadow-glow-purple);
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.badge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.sm {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+}
+
+.md {
+  width: 52px;
+  height: 52px;
+}
+
+.lg {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-2xl);
+}
+
+.label {
+  font-size: 0.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+  line-height: 1;
+}
+
+.sm .label {
+  font-size: 0.4375rem;
+}
+
+.lg .label {
+  font-size: 0.625rem;
+}
+
+.number {
+  font-weight: 900;
+  line-height: 1;
+}
+
+.sm .number {
+  font-size: 1rem;
+}
+
+.md .number {
+  font-size: 1.375rem;
+}
+
+.lg .number {
+  font-size: 2rem;
+}

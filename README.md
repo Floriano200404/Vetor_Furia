@@ -1,34 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ⚡ Vetor Fúria — Gamificação Pessoal & Produtividade
 
-## Getting Started
+Um aplicativo web de gamificação pessoal que transforma sua rotina de hábitos, treinos e estudos em uma jornada RPG. Cada ação completa gera XP, sobe seu nível e evolui seu avatar.
 
-First, run the development server:
+## 🎮 Features
+
+### Core RPG
+- **Sistema de XP & Níveis** — Fórmula progressiva com 5 estágios de avatar
+- **Barra de XP animada** — Spring physics via Framer Motion (60fps)
+- **Modal de Level Up** — Animação celebratória com particle burst
+- **XP Ledger** — Histórico transacional de todos os ganhos de XP
+
+### ✅ Hábitos Diários
+- Checklist diário com checkboxes animados
+- **12 templates pré-prontos** (saúde, estudo, bem-estar, fitness)
+- **Contagem de ofensiva (streaks)** com bônus de XP
+- Bônus de +50 XP ao completar todos os hábitos do dia
+
+### 💪 Saúde & Treinos
+- Registro de treinos com **catálogo de 20 exercícios** pré-cadastrados
+- **GIFs de execução** via URL externa
+- Tracking de séries (reps × peso)
+- **Biometria**: peso, altura, IMC + biomarcadores de exames (JSON flexível)
+
+### 📖 Estudos
+- **Timer Pomodoro** circular animado (15/25/45/60 min)
+- **Editor Markdown** com preview em tempo real
+- Sessões de estudo com XP baseado na duração
+- Histórico de sessões com notas
+
+## 🏗️ Arquitetura
+
+**Desacoplamento**: Módulos de domínio emitem eventos `XP_EARNED` via EventBus. O Core RPG consome e grava no Ledger. Nenhum módulo importa lógica de outro.
+
+## 🚀 Setup
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔧 Stack
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Next.js 16** (App Router + Turbopack)
+- **React 19** + TypeScript
+- **Framer Motion** — Animações de XP, avatar, transições
+- **localStorage** — Persistência MVP (preparado para Firebase)

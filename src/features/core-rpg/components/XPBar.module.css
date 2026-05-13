@@ -1,0 +1,100 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.compact {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.level {
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.xpText {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.track {
+  position: relative;
+  width: 100%;
+  height: 10px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+}
+
+.compact .track {
+  height: 6px;
+  flex: 1;
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--accent-xp-start), var(--accent-xp-end));
+  border-radius: var(--radius-full);
+  will-change: transform;
+}
+
+.glow {
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(90deg, var(--accent-xp-start), var(--accent-xp-end));
+  border-radius: var(--radius-full);
+  filter: blur(6px);
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 40%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0.15) 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--radius-full);
+  animation: shimmer 2.5s ease-in-out infinite;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.compactLabel {
+  font-family: var(--font-heading);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--accent-secondary);
+  white-space: nowrap;
+  min-width: 40px;
+  text-align: right;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
