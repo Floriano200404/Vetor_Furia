@@ -3,7 +3,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Dumbbell, Plus, X, Scale, Clock, Trash2, ChevronDown, ChevronUp, TrendingUp, Check } from 'lucide-react';
-import { useWorkouts, useBiometry, EXERCISE_CATALOG, MUSCLE_GROUPS, DEFAULT_BIOMARKERS, getLastExerciseLoad } from '@/features/health';
+import { useWorkouts, useBiometry, EXERCISE_CATALOG, MUSCLE_GROUPS, DEFAULT_BIOMARKERS, classifyBiomarker, getLastExerciseLoad, BiometryChart, BodySummary } from '@/features/health';
 import type { Exercise } from '@/features/health';
 import { RestTimer } from '@/shared/components/RestTimer';
 import styles from './workouts.module.css';
@@ -178,13 +178,19 @@ export default function WorkoutsPage() {
 
       {tab==='biometry' && !showBio && (
         <div>
+          {/* Body Summary Card */}
+          <BodySummary latest={bioRecs[0] || null} allRecords={bioRecs} />
+
+          {/* Weight Evolution Chart */}
+          <BiometryChart records={bioRecs} />
+
           <motion.button className="btn btn-primary" onClick={()=>setShowBio(true)} whileHover={{scale:1.03}} style={{marginBottom:'var(--space-lg)'}}><Plus size={18}/> Registrar Biometria</motion.button>
           {bioRecs.length===0?(
             <div className={styles.emptyState}><Scale size={48} style={{color:'var(--text-muted)',opacity:0.4}}/><h3>Nenhuma biometria registrada</h3><p>Registre peso e altura para acompanhar sua evolução.</p></div>
           ):bioRecs.map(b=><div key={b.id} className={styles.biometryCard}>
             <div className={styles.biometryHeader}><span className={styles.biometryDate}>{new Date(b.measuredAt).toLocaleDateString('pt-BR')}</span><span className={styles.xpBadge}>+15 XP</span></div>
             <div className={styles.biometryStats}><div className={styles.bioStat}><span className={styles.bioValue}>{b.weight} kg</span><span className={styles.bioLabel}>Peso</span></div><div className={styles.bioStat}><span className={styles.bioValue}>{b.height} cm</span><span className={styles.bioLabel}>Altura</span></div><div className={styles.bioStat}><span className={styles.bioValue}>{(b.weight/Math.pow(b.height/100,2)).toFixed(1)}</span><span className={styles.bioLabel}>IMC</span></div></div>
-            {Object.keys(b.biomarkers).length>0&&<div className={styles.biomarkersGrid}>{Object.entries(b.biomarkers).map(([k,v])=>{const d=DEFAULT_BIOMARKERS.find(x=>x.key===k);return<div key={k} className={styles.biomarkerItem}><span className={styles.biomarkerLabel}>{d?.label||k}</span><span className={styles.biomarkerValue}>{v}</span></div>;})}</div>}
+            {Object.keys(b.biomarkers).length>0&&<div className={styles.biomarkersGrid}>{Object.entries(b.biomarkers).map(([k,v])=>{const d=DEFAULT_BIOMARKERS.find(x=>x.key===k);const cls=classifyBiomarker(k,v);return<div key={k} className={styles.biomarkerItem}><span className={styles.biomarkerLabel}>{d ? `${d.label} (${d.unit})` : k}</span><span className={styles.biomarkerValue}><span style={{marginRight:'4px'}}>{cls.emoji}</span><span style={{color: cls.color}}>{v}</span></span></div>;})}</div>}
           </div>)}
         </div>
       )}
@@ -194,7 +200,7 @@ export default function WorkoutsPage() {
           <div className={styles.formHeader}><h3>Registrar Biometria</h3><button className="btn btn-ghost btn-icon" onClick={()=>setShowBio(false)}><X size={18}/></button></div>
           <div className={styles.formGrid}><div className={styles.formField}><label>Peso (kg)</label><input type="number" step="0.1" placeholder="80.5" value={bw} onChange={e=>setBw(e.target.value)}/></div><div className={styles.formField}><label>Altura (cm)</label><input type="number" placeholder="178" value={bh} onChange={e=>setBh(e.target.value)}/></div></div>
           <h4 className={styles.catalogTitle} style={{marginTop:'var(--space-lg)'}}>Biomarcadores (opcional)</h4>
-          <div className={styles.biomarkersForm}>{DEFAULT_BIOMARKERS.map(x=><div key={x.key} className={styles.formField}><label>{x.label}</label><input type="number" step="0.1" placeholder="—" value={bm[x.key]||''} onChange={e=>setBm({...bm,[x.key]:e.target.value})}/></div>)}</div>
+          <div className={styles.biomarkersForm}>{DEFAULT_BIOMARKERS.map(x=><div key={x.key} className={styles.formField}><label>{x.label} ({x.unit})</label><input type="number" step="0.1" placeholder="—" value={bm[x.key]||''} onChange={e=>setBm({...bm,[x.key]:e.target.value})}/></div>)}</div>
           <div className={styles.formActions}><button className="btn btn-secondary" onClick={()=>setShowBio(false)}>Cancelar</button><motion.button className="btn btn-success btn-lg" onClick={saveB} disabled={!bw||!bh} whileHover={{scale:1.03}}>Salvar (+15 XP)</motion.button></div>
         </motion.div>
       )}

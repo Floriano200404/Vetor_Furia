@@ -3,5 +3,7 @@ export { useBiometry } from './hooks/useBiometry';
 export type { Workout, Exercise, ExerciseSet, ExerciseCatalogItem } from './domain/workout.types';
 export type { Biometry } from './domain/biometry.types';
 export { EXERCISE_CATALOG, MUSCLE_GROUPS } from './domain/exercise-catalog';
-export { DEFAULT_BIOMARKERS } from './domain/biometry.types';
+export { DEFAULT_BIOMARKERS, classifyBiomarker } from './domain/biometry.types';
 export { getLastExerciseLoad } from './services/health.service';
+export { BiometryChart } from './components/BiometryChart';
+export { BodySummary } from './components/BodySummary';
