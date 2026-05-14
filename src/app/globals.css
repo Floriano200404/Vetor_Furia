@@ -54,6 +54,13 @@
   --space-2xl: 3rem;
   --space-3xl: 4rem;
 
+  /* Heatmap Colors */
+  --heatmap-0: rgba(148, 163, 184, 0.08);
+  --heatmap-1: rgba(16, 185, 129, 0.25);
+  --heatmap-2: rgba(16, 185, 129, 0.45);
+  --heatmap-3: rgba(16, 185, 129, 0.7);
+  --heatmap-4: #10b981;
+
   /* Radius */
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;

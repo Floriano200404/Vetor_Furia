@@ -5,12 +5,14 @@
  * Also handles the LevelUp modal globally and auth guard.
  */
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Sidebar } from '@/shared/components/Sidebar';
 import { Header } from '@/shared/components/Header';
 import { LevelUpModal, usePlayerStats } from '@/features/core-rpg';
+import { runDailyCheck } from '@/features/core-rpg/services/daily-check.service';
 import { useAuth } from '@/shared/providers/AuthProvider';
+import { useToast } from '@/shared/components/Toast';
 import styles from './dashboard.module.css';
 
 export default function DashboardLayout({
@@ -21,6 +23,8 @@ export default function DashboardLayout({
   const { isAuthenticated, isLoading, isFirebaseMode, displayName, logout } = useAuth();
   const { stats, isLevelingUp, dismissLevelUp, newLevel } = usePlayerStats();
   const router = useRouter();
+  const toast = useToast();
+  const dailyCheckRan = useRef(false);
 
   // Auth guard: redirect to login when Firebase is active but user is not authenticated
   useEffect(() => {
@@ -28,6 +32,35 @@ export default function DashboardLayout({
       router.push('/login');
     }
   }, [isLoading, isFirebaseMode, isAuthenticated, router]);
+
+  // Daily HP check — runs once per day on first access
+  useEffect(() => {
+    if (dailyCheckRan.current || isLoading) return;
+    dailyCheckRan.current = true;
+
+    // Small delay to let stats load first
+    const timer = setTimeout(() => {
+      const result = runDailyCheck();
+      if (!result || result.type === 'no_habits') return;
+
+      switch (result.type) {
+        case 'death':
+          toast.error(result.message);
+          break;
+        case 'damage':
+          toast.warning(result.message);
+          break;
+        case 'heal':
+          toast.success(result.message);
+          break;
+        case 'none':
+          toast.info(result.message);
+          break;
+      }
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [isLoading, toast]);
 
   // Show nothing while checking auth
   if (isLoading) {

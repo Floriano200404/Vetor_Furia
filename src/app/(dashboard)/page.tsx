@@ -4,9 +4,11 @@
  * Dashboard Page — Main overview with avatar, stats, and recent activity.
  */
 
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Flame, TrendingUp, Zap, Target, Calendar, BookOpen, Dumbbell, CheckSquare, Heart, Coins, ShoppingBag } from 'lucide-react';
-import { usePlayerStats, XPBar, AvatarDisplay, LevelBadge } from '@/features/core-rpg';
+import { usePlayerStats, XPBar, AvatarDisplay, LevelBadge, ActivityHeatmap } from '@/features/core-rpg';
+import { getLedgerEntries } from '@/features/core-rpg/services/xp-ledger.service';
 import type { XPEntry } from '@/features/core-rpg';
 import styles from './page.module.css';
 
@@ -51,6 +53,7 @@ function formatTimeAgo(timestamp: number): string {
 
 export default function DashboardPage() {
   const { stats, recentXP } = usePlayerStats();
+  const allEntries = useMemo(() => getLedgerEntries(), []);
 
   const quickStats = [
     {
@@ -186,6 +189,11 @@ export default function DashboardPage() {
             ))
           )}
         </div>
+      </motion.section>
+
+      {/* Activity Heatmap */}
+      <motion.section variants={itemVariants}>
+        <ActivityHeatmap entries={allEntries} />
       </motion.section>
 
       {/* Module Quick Access */}

@@ -7,19 +7,20 @@
 
 import { useState, useCallback, useEffect, createContext, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, AlertCircle, X } from 'lucide-react';
+import { CheckCircle2, AlertCircle, AlertTriangle, X } from 'lucide-react';
 import styles from './Toast.module.css';
 
 interface ToastItem {
   id: number;
   message: string;
-  type: 'success' | 'error' | 'info';
+  type: 'success' | 'error' | 'info' | 'warning';
 }
 
 interface ToastContextType {
   success: (msg: string) => void;
   error: (msg: string) => void;
   info: (msg: string) => void;
+  warning: (msg: string) => void;
 }
 
 const ToastContext = createContext<ToastContextType | null>(null);
@@ -32,6 +33,7 @@ export function useToast(): ToastContextType {
       success: (msg) => console.log('[Toast]', msg),
       error: (msg) => console.error('[Toast]', msg),
       info: (msg) => console.info('[Toast]', msg),
+      warning: (msg) => console.warn('[Toast]', msg),
     };
   }
   return ctx;
@@ -51,13 +53,14 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const success = useCallback((msg: string) => addToast(msg, 'success'), [addToast]);
   const error = useCallback((msg: string) => addToast(msg, 'error'), [addToast]);
   const info = useCallback((msg: string) => addToast(msg, 'info'), [addToast]);
+  const warning = useCallback((msg: string) => addToast(msg, 'warning'), [addToast]);
 
   const dismiss = useCallback((id: number) => {
     setToasts(prev => prev.filter(t => t.id !== id));
   }, []);
 
   return (
-    <ToastContext.Provider value={{ success, error, info }}>
+    <ToastContext.Provider value={{ success, error, info, warning }}>
       {children}
       <div className={styles.container}>
         <AnimatePresence>
@@ -73,6 +76,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               <span className={styles.icon}>
                 {t.type === 'success' && <CheckCircle2 size={16} />}
                 {t.type === 'error' && <AlertCircle size={16} />}
+                {t.type === 'warning' && <AlertTriangle size={16} />}
                 {t.type === 'info' && <AlertCircle size={16} />}
               </span>
               <span className={styles.message}>{t.message}</span>

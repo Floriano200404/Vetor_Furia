@@ -4,6 +4,7 @@ export { LevelBadge } from './components/LevelBadge';
 export { LevelUpModal } from './components/LevelUpModal';
 export { HPBar } from './components/HPBar';
 export { GoldDisplay } from './components/GoldDisplay';
+export { ActivityHeatmap } from './components/ActivityHeatmap';
 export { usePlayerStats } from './hooks/usePlayerStats';
 export { calculatePlayerStats, calculateLevel, getAvatarStage } from './services/level-calculator';
 export type { Player, PlayerStats } from './domain/player.types';
