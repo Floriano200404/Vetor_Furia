@@ -2,7 +2,7 @@
  * Pre-built exercise catalog with GIF URLs from public APIs.
  */
 
-import type { ExerciseCatalogItem } from './workout.types';
+import type { ExerciseCatalogItem, WorkoutTemplate, TemplateExercise } from './workout.types';
 
 export const EXERCISE_CATALOG: ExerciseCatalogItem[] = [
   // Chest
@@ -40,4 +40,73 @@ export const EXERCISE_CATALOG: ExerciseCatalogItem[] = [
 
 export const MUSCLE_GROUPS = [
   'Peito', 'Costas', 'Ombros', 'Bíceps', 'Tríceps', 'Pernas', 'Abdômen',
+];
+
+/**
+ * Find a catalog item by name to inherit `gifUrl` and `muscleGroup`.
+ * Returns undefined if the name is not in the catalog.
+ */
+function fromCatalog(
+  name: string,
+  defaultSets: number,
+  defaultReps: number,
+): TemplateExercise {
+  const item = EXERCISE_CATALOG.find((e) => e.name === name);
+  if (!item) {
+    // Surfaces a bug at module load time instead of silently shipping a broken template.
+    throw new Error(`[WORKOUT_TEMPLATES] Exercise "${name}" not found in EXERCISE_CATALOG`);
+  }
+  return {
+    name: item.name,
+    muscleGroup: item.muscleGroup,
+    gifUrl: item.gifUrl,
+    defaultSets,
+    defaultReps,
+  };
+}
+
+export const WORKOUT_TEMPLATES: WorkoutTemplate[] = [
+  {
+    id: 'tpl-push',
+    name: 'Push — Peito, Ombro, Tríceps',
+    description: 'Empurrar: foco em hipertrofia da cadeia anterior. 4 exercícios compostos + isoladores.',
+    icon: '💪',
+    accent: 'push',
+    exercises: [
+      fromCatalog('Supino Reto', 4, 8),
+      fromCatalog('Supino Inclinado', 3, 10),
+      fromCatalog('Desenvolvimento', 3, 10),
+      fromCatalog('Elevação Lateral', 3, 12),
+      fromCatalog('Tríceps Pulley', 3, 12),
+      fromCatalog('Tríceps Francês', 3, 12),
+    ],
+  },
+  {
+    id: 'tpl-pull',
+    name: 'Pull — Costas e Bíceps',
+    description: 'Puxar: largura e espessura das costas + braço. Inclui dorsal e remada.',
+    icon: '🔙',
+    accent: 'pull',
+    exercises: [
+      fromCatalog('Puxada Frontal', 4, 10),
+      fromCatalog('Remada Curvada', 4, 8),
+      fromCatalog('Remada Unilateral', 3, 10),
+      fromCatalog('Rosca Direta', 3, 12),
+      fromCatalog('Rosca Martelo', 3, 12),
+    ],
+  },
+  {
+    id: 'tpl-legs',
+    name: 'Legs — Pernas completas',
+    description: 'Quadríceps, posterior, glúteo e panturrilha. Treino pesado, alto volume.',
+    icon: '🦵',
+    accent: 'legs',
+    exercises: [
+      fromCatalog('Agachamento Livre', 4, 8),
+      fromCatalog('Leg Press', 4, 10),
+      fromCatalog('Extensora', 3, 12),
+      fromCatalog('Flexora', 3, 12),
+      fromCatalog('Panturrilha', 4, 15),
+    ],
+  },
 ];

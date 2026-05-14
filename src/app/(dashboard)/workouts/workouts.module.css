@@ -6,6 +6,77 @@
 .tab:hover { color:var(--text-primary); }
 .tabActive { background:var(--bg-elevated); color:var(--text-primary); box-shadow:var(--shadow-sm); }
 
+/* Sub-tabs inside the "Treinos" top-level tab */
+.subTabs {
+  display: flex;
+  gap: var(--space-xs);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  width: fit-content;
+  margin-bottom: var(--space-md);
+}
+
+.subTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.subTab:hover {
+  color: var(--text-primary);
+}
+
+.subTabActive {
+  background: var(--accent-primary);
+  color: white;
+  box-shadow: var(--shadow-glow-purple);
+}
+
+.subTabActive:hover {
+  color: white;
+}
+
+.statsSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* 1RM badge shown next to compound lift names in workout history */
+.exSummaryName {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.oneRMBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  color: var(--accent-primary);
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.02em;
+}
+
 .emptyState { display:flex; flex-direction:column; align-items:center; gap:var(--space-md); padding:var(--space-3xl); text-align:center; }
 .emptyState h3 { font-size:1.125rem; color:var(--text-secondary); }
 .emptyState p { font-size:0.875rem; color:var(--text-muted); }
@@ -214,4 +285,10 @@
 .biomarkerValue { font-weight:600; color:var(--text-primary); }
 .biomarkersForm { display:grid; grid-template-columns:repeat(2,1fr); gap:var(--space-md); }
 
-@media (max-width:640px) { .formGrid,.biomarkersForm { grid-template-columns:1fr; } .biometryStats { grid-template-columns:1fr; } .tabs { width:100%; } }
+@media (max-width:640px) {
+  .formGrid,.biomarkersForm { grid-template-columns:1fr; }
+  .biometryStats { grid-template-columns:1fr; }
+  .tabs { width:100%; }
+  .subTabs { width: 100%; overflow-x: auto; flex-wrap: nowrap; }
+  .subTab { white-space: nowrap; }
+}
