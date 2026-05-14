@@ -6,10 +6,32 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, CheckCircle2, Flame, Trophy } from 'lucide-react';
+import { Plus, CheckCircle2, Flame, Trophy, Sparkles } from 'lucide-react';
 import { HabitCard, HabitTemplateSelector, useHabits } from '@/features/habits';
 import type { HabitTemplate } from '@/features/habits';
 import styles from './habits.module.css';
+
+const MOTIVATIONAL_QUOTES = [
+  { text: 'A disciplina é a ponte entre metas e conquistas.', author: 'Jim Rohn' },
+  { text: 'Você não precisa ser excelente para começar, mas precisa começar para ser excelente.', author: 'Zig Ziglar' },
+  { text: 'O segredo para avançar é começar.', author: 'Mark Twain' },
+  { text: 'Pequenas ações diárias criam transformações extraordinárias.', author: 'Robin Sharma' },
+  { text: 'A consistência supera o talento quando o talento não é consistente.', author: 'Desconhecido' },
+  { text: 'Não é sobre ter tempo. É sobre fazer tempo.', author: 'Desconhecido' },
+  { text: 'O homem é aquilo que ele faz repetidamente. Excelência, então, não é um ato, mas um hábito.', author: 'Aristóteles' },
+  { text: 'Faça hoje o que outros não querem. Amanha fará o que outros não podem.', author: 'Jerry Rice' },
+  { text: 'A dor da disciplina é muito menor que a dor do arrependimento.', author: 'Desconhecido' },
+  { text: 'Só existe um caminho para a felicidade e este consiste em parar de se preocupar com coisas que estão além do nosso poder.', author: 'Epícteto' },
+  { text: 'A força não vem da vitória. Suas lutas desenvolvem suas forças.', author: 'Arnold Schwarzenegger' },
+  { text: 'Você é o que faz consistentemente. Então, a excelência não é um ato, mas um hábito.', author: 'Shaquille O\'Neal' },
+  { text: 'Não desista. O começo é sempre o mais difícil.', author: 'Desconhecido' },
+  { text: 'Cada dia é uma nova oportunidade de se tornar quem você quer ser.', author: 'Desconhecido' },
+];
+
+function getDailyQuote() {
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
+  return MOTIVATIONAL_QUOTES[dayOfYear % MOTIVATIONAL_QUOTES.length];
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -73,6 +95,15 @@ export default function HabitsPage() {
           <Plus size={18} />
           Adicionar Hábito
         </motion.button>
+      </motion.div>
+
+      {/* Motivational Quote of the Day */}
+      <motion.div className={styles.quoteCard} variants={itemVariants}>
+        <Sparkles size={16} className={styles.quoteIcon} />
+        <div className={styles.quoteContent}>
+          <p className={styles.quoteText}>“{getDailyQuote().text}”</p>
+          <span className={styles.quoteAuthor}>— {getDailyQuote().author}</span>
+        </div>
       </motion.div>
 
       {/* Progress Overview */}

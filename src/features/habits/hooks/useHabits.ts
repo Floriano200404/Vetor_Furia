@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { eventBus, XP_EVENTS } from '@/shared/events';
+import { eventBus, XP_EVENTS, GAME_EVENTS } from '@/shared/events';
 import type { XPEarnedPayload } from '@/shared/events';
 import type { HabitWithLog } from '../domain/habit.types';
 import {
@@ -70,6 +70,13 @@ export function useHabits() {
       };
       eventBus.emit(XP_EVENTS.XP_EARNED, payload);
 
+      // Gold reward for habit completion
+      eventBus.emit(GAME_EVENTS.GOLD_EARNED, {
+        userId: DEFAULT_USER_ID,
+        amount: 5,
+        source: `Hábito: ${habitWithLog.habit.title}`,
+      });
+
       // Check if all completed for bonus
       refresh();
       setTimeout(() => {
@@ -82,6 +89,12 @@ export function useHabits() {
             sourceId: 'all-habits-complete',
             description: '🏆 Todos os hábitos completos!',
             timestamp: Date.now(),
+          });
+          // Bonus Gold for all complete
+          eventBus.emit(GAME_EVENTS.GOLD_EARNED, {
+            userId: DEFAULT_USER_ID,
+            amount: 20,
+            source: 'Bônus: Todos hábitos completos',
           });
         }
       }, 300);

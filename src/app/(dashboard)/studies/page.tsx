@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Play, Pause, RotateCcw, BookOpen, Clock, Save, Trash2, FileText } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { useTimer, useStudySessions, calculateStudyXP } from '@/features/studies';
+import { useTimer, useStudySessions, calculateStudyXP, AmbientPlayer, StudyStats } from '@/features/studies';
 import type { StudySession } from '@/features/studies';
 import styles from './studies.module.css';
 
@@ -90,6 +90,9 @@ export default function StudiesPage() {
             ))}
           </div>
 
+          {/* Ambient Sound Player */}
+          <AmbientPlayer />
+
           {/* Session meta */}
           <div className={styles.sessionMeta}>
             <div className={styles.formField}><label>Matéria / Tópico</label><input placeholder="Ex: React Hooks, Cálculo II" value={subject} onChange={e=>setSubject(e.target.value)}/></div>
@@ -122,6 +125,9 @@ export default function StudiesPage() {
           )}
         </div>
       </div>
+
+      {/* Study Stats */}
+      <StudyStats sessions={sessions} />
 
       {/* Session History */}
       <div className={styles.historySection}>
