@@ -5,7 +5,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { Flame, TrendingUp, Zap, Target, Calendar, BookOpen, Dumbbell, CheckSquare } from 'lucide-react';
+import { Flame, TrendingUp, Zap, Target, Calendar, BookOpen, Dumbbell, CheckSquare, Heart, Coins, ShoppingBag } from 'lucide-react';
 import { usePlayerStats, XPBar, AvatarDisplay, LevelBadge } from '@/features/core-rpg';
 import type { XPEntry } from '@/features/core-rpg';
 import styles from './page.module.css';
@@ -76,6 +76,18 @@ export default function DashboardPage() {
       label: 'Próximo Nível',
       value: `${(stats.xpForNextLevel - stats.totalXP).toLocaleString('pt-BR')} XP`,
       color: 'var(--accent-warning)',
+    },
+    {
+      icon: <Heart size={20} />,
+      label: 'HP',
+      value: `${stats.hp}/${stats.maxHp}`,
+      color: '#ef4444',
+    },
+    {
+      icon: <Coins size={20} />,
+      label: 'Ouro',
+      value: stats.gold.toLocaleString('pt-BR'),
+      color: '#f59e0b',
     },
   ];
 
@@ -184,6 +196,7 @@ export default function DashboardPage() {
             { icon: <CheckSquare size={28} />, title: 'Hábitos', desc: 'Checklist diário com streaks', href: '/habits', color: 'var(--accent-success)' },
             { icon: <Dumbbell size={28} />, title: 'Treinos', desc: 'Tracking de musculação', href: '/workouts', color: 'var(--accent-warning)' },
             { icon: <BookOpen size={28} />, title: 'Estudos', desc: 'Timer de foco + notas', href: '/studies', color: 'var(--accent-secondary)' },
+            { icon: <ShoppingBag size={28} />, title: 'Loja', desc: 'Gaste ouro com recompensas', href: '/store', color: '#f59e0b' },
           ].map((mod) => (
             <motion.a
               key={mod.title}

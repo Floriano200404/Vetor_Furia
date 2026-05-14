@@ -6,7 +6,12 @@
  */
 
 import { AuthProvider } from '@/shared/providers/AuthProvider';
+import { ToastProvider } from '@/shared/components/Toast';
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <AuthProvider>{children}</AuthProvider>;
+  return (
+    <AuthProvider>
+      <ToastProvider>{children}</ToastProvider>
+    </AuthProvider>
+  );
 }

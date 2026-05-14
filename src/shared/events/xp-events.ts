@@ -51,8 +51,7 @@ export interface HPHealedPayload {
 export interface GoldEarnedPayload {
   userId: string;
   amount: number;
-  source: XPSource;
-  reason: string;
+  source: string;
 }
 
 export interface GoldSpentPayload {

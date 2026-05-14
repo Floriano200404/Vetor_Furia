@@ -10,6 +10,7 @@ import { Coins, Plus, Trash2, ShoppingCart, Gamepad2, Tv, Pizza, Coffee, Music, 
 import { usePlayerStats } from '@/features/core-rpg';
 import { getRewards, addReward, deleteReward, purchaseReward } from '@/features/store/services/store.service';
 import type { Reward } from '@/features/store/domain/store.types';
+import { useToast } from '@/shared/components/Toast';
 import styles from './store.module.css';
 
 const containerVariants = {
@@ -32,7 +33,8 @@ const ICON_MAP: Record<string, React.ReactNode> = {
 };
 
 export default function StorePage() {
-  const { stats } = usePlayerStats();
+  const { stats, refreshStats } = usePlayerStats();
+  const toast = useToast();
   const [rewards, setRewards] = useState<Reward[]>([]);
   const [isAdding, setIsAdding] = useState(false);
   const [newTitle, setNewTitle] = useState('');
@@ -59,10 +61,11 @@ export default function StorePage() {
 
   const handlePurchase = (reward: Reward) => {
     if (purchaseReward(reward)) {
-      // Optional: Show a success toast or animation here
-      alert(`Você resgatou: ${reward.title}! Aproveite.`);
+      toast.success(`🎉 Resgatado: ${reward.title}! Aproveite.`);
+      // Refresh stats after short delay for event to propagate
+      setTimeout(() => refreshStats(), 100);
     } else {
-      alert('Ouro insuficiente!');
+      toast.error('Ouro insuficiente! Continue completando atividades.');
     }
   };
 
