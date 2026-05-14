@@ -48,6 +48,7 @@ export function calculatePlayerStats(player: Player): PlayerStats {
   const xpProgress = xpRangeForLevel > 0 ? Math.min(xpInCurrentLevel / xpRangeForLevel, 1) : 0;
 
   return {
+    displayName: player.displayName,
     totalXP: player.totalXP,
     level,
     avatarStage: avatarStageConfig.name,

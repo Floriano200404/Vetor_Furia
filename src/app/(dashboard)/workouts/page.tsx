@@ -6,6 +6,7 @@ import { Dumbbell, Plus, X, Scale, Clock, Trash2, ChevronDown, ChevronUp, Trendi
 import { useWorkouts, useBiometry, EXERCISE_CATALOG, MUSCLE_GROUPS, DEFAULT_BIOMARKERS, classifyBiomarker, getLastExerciseLoad, BiometryChart, BodySummary } from '@/features/health';
 import type { Exercise } from '@/features/health';
 import { RestTimer } from '@/shared/components/RestTimer';
+import { useToast } from '@/shared/components/Toast';
 import styles from './workouts.module.css';
 
 function genId() { return `${Date.now()}-${Math.random().toString(36).slice(2,9)}`; }
@@ -20,6 +21,7 @@ function daysAgo(timestamp: number): string {
 export default function WorkoutsPage() {
   const { workouts, addWorkout, deleteWorkout } = useWorkouts();
   const { records: bioRecs, addBiometry } = useBiometry();
+  const toast = useToast();
   const [tab, setTab] = useState<'workouts'|'biometry'>('workouts');
   const [showForm, setShowForm] = useState(false);
   const [showBio, setShowBio] = useState(false);
@@ -76,8 +78,22 @@ export default function WorkoutsPage() {
     }));
   }, []);
 
-  const saveW = ()=>{if(!wName.trim()||!exs.length)return;addWorkout({name:wName,exercises:exs,durationMinutes:wDur});setWName('');setExs([]);setWDur(60);setShowForm(false);};
-  const saveB = ()=>{const w=parseFloat(bw),h=parseFloat(bh);if(isNaN(w)||isNaN(h))return;const p:Record<string,number|string>={};Object.entries(bm).forEach(([k,v])=>{const n=parseFloat(v);p[k]=isNaN(n)?v:n;});addBiometry({weight:w,height:h,biomarkers:p});setShowBio(false);};
+  const saveW = ()=>{
+    if(!wName.trim()||!exs.length)return;
+    addWorkout({name:wName,exercises:exs,durationMinutes:wDur});
+    const xp = exs.length > 0 ? 30 + Math.max(0, exs.length - 1) * 2 : 0;
+    toast.success(`Treino salvo! +${xp} XP`);
+    setWName('');setExs([]);setWDur(60);setShowForm(false);
+  };
+  const saveB = ()=>{
+    const w=parseFloat(bw),h=parseFloat(bh);
+    if(isNaN(w)||isNaN(h))return;
+    const p:Record<string,number|string>={};
+    Object.entries(bm).forEach(([k,v])=>{const n=parseFloat(v);p[k]=isNaN(n)?v:n;});
+    addBiometry({weight:w,height:h,biomarkers:p});
+    toast.success(`Biometria salva! +15 XP`);
+    setShowBio(false);setBw('');setBh('');setBm({});
+  };
 
   return (
     <motion.div className={styles.page} initial={{opacity:0}} animate={{opacity:1}}>
@@ -197,11 +213,11 @@ export default function WorkoutsPage() {
 
       {tab==='biometry' && showBio && (
         <motion.div className={styles.formSection} initial={{opacity:0,y:20}} animate={{opacity:1,y:0}}>
-          <div className={styles.formHeader}><h3>Registrar Biometria</h3><button className="btn btn-ghost btn-icon" onClick={()=>setShowBio(false)}><X size={18}/></button></div>
+          <div className={styles.formHeader}><h3>Registrar Biometria</h3><button className="btn btn-ghost btn-icon" onClick={()=>{setShowBio(false);setBw('');setBh('');setBm({});}}><X size={18}/></button></div>
           <div className={styles.formGrid}><div className={styles.formField}><label>Peso (kg)</label><input type="number" step="0.1" placeholder="80.5" value={bw} onChange={e=>setBw(e.target.value)}/></div><div className={styles.formField}><label>Altura (cm)</label><input type="number" placeholder="178" value={bh} onChange={e=>setBh(e.target.value)}/></div></div>
           <h4 className={styles.catalogTitle} style={{marginTop:'var(--space-lg)'}}>Biomarcadores (opcional)</h4>
           <div className={styles.biomarkersForm}>{DEFAULT_BIOMARKERS.map(x=><div key={x.key} className={styles.formField}><label>{x.label} ({x.unit})</label><input type="number" step="0.1" placeholder="—" value={bm[x.key]||''} onChange={e=>setBm({...bm,[x.key]:e.target.value})}/></div>)}</div>
-          <div className={styles.formActions}><button className="btn btn-secondary" onClick={()=>setShowBio(false)}>Cancelar</button><motion.button className="btn btn-success btn-lg" onClick={saveB} disabled={!bw||!bh} whileHover={{scale:1.03}}>Salvar (+15 XP)</motion.button></div>
+          <div className={styles.formActions}><button className="btn btn-secondary" onClick={()=>{setShowBio(false);setBw('');setBh('');setBm({});}}>Cancelar</button><motion.button className="btn btn-success btn-lg" onClick={saveB} disabled={!bw||!bh} whileHover={{scale:1.03}}>Salvar (+15 XP)</motion.button></div>
         </motion.div>
       )}
 

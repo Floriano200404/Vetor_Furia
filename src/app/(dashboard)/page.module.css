@@ -279,6 +279,9 @@
   .statsGrid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .modulesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
@@ -302,6 +305,6 @@
   }
 
   .modulesGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 }

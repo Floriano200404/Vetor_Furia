@@ -61,7 +61,7 @@ export function saveHabits(habits: Habit[]): void {
   writeLocal(STORAGE_KEYS.HABITS, habits);
 }
 
-export function addHabit(data: { title: string; icon: string; xpReward: number; type?: 'positive' | 'negative' }): Habit {
+export function addHabit(data: { title: string; icon: string; xpReward: number }): Habit {
   const habits = getHabits();
   const habit: Habit = {
     id: generateId(),
@@ -169,6 +169,7 @@ export function toggleHabitForToday(habitId: string): {
       currentStreak: 0,
       longestStreak: 0,
       completedAt: Date.now(),
+      xpAwarded: false,
     };
     logs.push(log);
   }
@@ -207,10 +208,24 @@ export function getHabitsWithLogs(): HabitWithLog[] {
       currentStreak: streak,
       longestStreak: streak,
       completedAt: null,
+      xpAwarded: false,
     };
 
     return { habit, log, streak };
   });
+}
+
+/**
+ * Mark a habit log as having awarded XP (prevents duplicates).
+ */
+export function markXPAwarded(habitId: string, date: string): void {
+  const logs = getHabitLogs();
+  const log = logs.find((l) => l.habitId === habitId && l.date === date);
+  if (log) {
+    log.xpAwarded = true;
+    saveHabitLogs(logs);
+    habitLogsAdapter().set(log.id, log).catch(console.error);
+  }
 }
 
 /**

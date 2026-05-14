@@ -11,6 +11,7 @@ import { usePlayerStats, AvatarDisplay, LevelBadge } from '@/features/core-rpg';
 import { useAuth } from '@/shared/providers/AuthProvider';
 import { getPlayer, savePlayer, getLedgerEntries } from '@/features/core-rpg/services/xp-ledger.service';
 import type { XPEntry } from '@/features/core-rpg';
+import { useToast } from '@/shared/components/Toast';
 import styles from './profile.module.css';
 
 const containerVariants = {
@@ -31,8 +32,9 @@ const SOURCE_ICONS: Record<string, { icon: typeof Zap; color: string; label: str
 };
 
 export default function ProfilePage() {
-  const { stats, recentXP } = usePlayerStats();
+  const { stats, recentXP, refreshStats } = usePlayerStats();
   const { displayName: authName, isFirebaseMode } = useAuth();
+  const toast = useToast();
   const allEntries = useMemo(() => getLedgerEntries(), []);
   const [editingName, setEditingName] = useState(false);
   const [nameInput, setNameInput] = useState('');
@@ -80,9 +82,13 @@ export default function ProfilePage() {
       const player = getPlayer();
       player.displayName = nameInput.trim();
       savePlayer(player);
+      refreshStats(); // Trigger stats refresh to update Header
       setEditingName(false);
+      toast.success('Nome atualizado!');
     }
   };
+
+  const displayTitle = isFirebaseMode ? authName : stats.displayName;
 
   return (
     <motion.div className={styles.page} variants={containerVariants} initial="hidden" animate="visible">
@@ -114,10 +120,12 @@ export default function ProfilePage() {
               </div>
             ) : (
               <h1 className={styles.heroName}>
-                {authName || 'Guerreiro'}
-                <button className={styles.editBtn} onClick={() => { setNameInput(authName || ''); setEditingName(true); }}>
-                  <Edit3 size={14} />
-                </button>
+                {displayTitle}
+                {!isFirebaseMode && (
+                  <button className={styles.editBtn} onClick={() => { setNameInput(stats.displayName || ''); setEditingName(true); }}>
+                    <Edit3 size={14} />
+                  </button>
+                )}
               </h1>
             )}
           </div>

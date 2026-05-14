@@ -66,7 +66,7 @@ export function Sidebar() {
       </nav>
 
       <div className={styles.footer}>
-        <div className={styles.version}>v1.0 MVP</div>
+        <div className={styles.version}>v1.1</div>
       </div>
     </aside>
   );

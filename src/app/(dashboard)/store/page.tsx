@@ -54,16 +54,17 @@ export default function StorePage() {
     setNewTitle(''); setNewDesc(''); setNewCost(50);
   };
 
-  const handleDelete = (id: string) => {
-    deleteReward(id);
-    setRewards(prev => prev.filter(r => r.id !== id));
+  const handleDelete = (id: string, title: string) => {
+    if (window.confirm(`Tem certeza que deseja deletar a recompensa "${title}"?`)) {
+      deleteReward(id);
+      setRewards(prev => prev.filter(r => r.id !== id));
+      toast.info(`Recompensa removida.`);
+    }
   };
 
   const handlePurchase = (reward: Reward) => {
     if (purchaseReward(reward)) {
       toast.success(`🎉 Resgatado: ${reward.title}! Aproveite.`);
-      // Refresh stats after short delay for event to propagate
-      setTimeout(() => refreshStats(), 100);
     } else {
       toast.error('Ouro insuficiente! Continue completando atividades.');
     }
@@ -87,7 +88,7 @@ export default function StorePage() {
           const canAfford = stats.gold >= reward.cost;
           return (
             <motion.div key={reward.id} className={`${styles.card} ${!canAfford ? styles.cardDisabled : ''}`} whileHover={{ scale: 1.02 }}>
-              <button className={styles.delBtn} onClick={() => handleDelete(reward.id)}>
+              <button className={styles.delBtn} onClick={() => handleDelete(reward.id, reward.title)}>
                 <Trash2 size={14} />
               </button>
               <div className={styles.cardIcon}>{ICON_MAP[reward.icon] || <Gift size={24} />}</div>

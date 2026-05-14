@@ -7,10 +7,12 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useTimer, useStudySessions, calculateStudyXP, AmbientPlayer, StudyStats } from '@/features/studies';
 import type { StudySession } from '@/features/studies';
+import { useToast } from '@/shared/components/Toast';
 import styles from './studies.module.css';
 
 export default function StudiesPage() {
   const timer = useTimer(25);
+  const toast = useToast();
   const { sessions, addSession, deleteSession } = useStudySessions();
   const [subject, setSubject] = useState('');
   const [notes, setNotes] = useState('');
@@ -23,13 +25,14 @@ export default function StudiesPage() {
     timer.start();
   };
 
+  const potentialXP = calculateStudyXP(timer.minutes, notes.trim().length > 0);
+
   const handleSave = () => {
     if (timer.minutes < 1 && timer.seconds < 30) return;
     addSession({ subject: subject || 'Sessão de Estudo', durationMinutes: Math.max(timer.minutes, 1), markdownNotes: notes, startedAt: startTime || Date.now() });
     setSubject(''); setNotes(''); setSessionStarted(false); timer.reset();
+    toast.success(`Sessão de estudo salva! +${potentialXP} XP`);
   };
-
-  const potentialXP = calculateStudyXP(timer.minutes, notes.trim().length > 0);
   const pad = (n: number) => n.toString().padStart(2, '0');
 
   return (

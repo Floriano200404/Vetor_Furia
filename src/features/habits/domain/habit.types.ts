@@ -22,6 +22,7 @@ export interface HabitLog {
   currentStreak: number;
   longestStreak: number;
   completedAt: number | null;
+  xpAwarded: boolean;
 }
 
 export interface HabitWithLog {

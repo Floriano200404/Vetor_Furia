@@ -18,6 +18,7 @@ export interface Player {
 }
 
 export interface PlayerStats {
+  displayName: string;
   totalXP: number;
   level: number;
   avatarStage: string;

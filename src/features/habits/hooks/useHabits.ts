@@ -14,6 +14,7 @@ import {
   deleteHabit,
   toggleHabitForToday,
   areAllHabitsCompleted,
+  markXPAwarded,
 } from '../services/habits.service';
 import { XP_REWARDS, DEFAULT_USER_ID } from '@/lib/constants';
 
@@ -42,10 +43,14 @@ export function useHabits() {
   const handleToggle = useCallback((habitId: string) => {
     const { log, streak, wasCompleted } = toggleHabitForToday(habitId);
     
-    if (wasCompleted) {
+    if (wasCompleted && !log.xpAwarded) {
       // Find the habit to get XP reward
       const habitWithLog = habitsWithLogs.find((h) => h.habit.id === habitId);
-      if (!habitWithLog) return;
+      if (!habitWithLog) { refresh(); return; }
+
+      // Mark as awarded to prevent duplicates
+      log.xpAwarded = true;
+      markXPAwarded(habitId, log.date);
 
       // Calculate XP with streak bonus
       let xpAmount = habitWithLog.habit.xpReward;

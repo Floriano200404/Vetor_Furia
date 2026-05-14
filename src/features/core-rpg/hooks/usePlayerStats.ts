@@ -32,7 +32,7 @@ let isGlobalListenerRegistered = false;
 export function usePlayerStats(): UsePlayerStatsReturn {
   const [stats, setStats] = useState<PlayerStats>(() => {
     return {
-      totalXP: 0, level: 1, avatarStage: '1', avatarSprite: 'avatar_1.png',
+      displayName: 'Guerreiro', totalXP: 0, level: 1, avatarStage: '1', avatarSprite: 'avatar_1.png',
       xpForCurrentLevel: 0, xpForNextLevel: 10, xpProgress: 0, levelTitle: '1',
       hp: 100, maxHp: 100, gold: 0
     };

@@ -48,7 +48,7 @@ export default function DashboardLayout({
     <div className={styles.layout}>
       <Sidebar />
       <div className={styles.main}>
-        <Header stats={stats} displayName={displayName} onLogout={isFirebaseMode ? logout : undefined} />
+        <Header stats={stats} displayName={isFirebaseMode ? displayName : stats.displayName} onLogout={isFirebaseMode ? logout : undefined} />
         <main className={styles.content}>
           {children}
         </main>

@@ -5,7 +5,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { Flame, Trash2 } from 'lucide-react';
+import { Flame, Trash2, Coins } from 'lucide-react';
 import styles from './HabitCard.module.css';
 import type { HabitWithLog } from '../domain/habit.types';
 
@@ -62,7 +62,10 @@ export function HabitCard({ habitWithLog, onToggle, onDelete }: HabitCardProps) 
         <span className={`${styles.title} ${isCompleted ? styles.titleDone : ''}`}>
           {habit.title}
         </span>
-        <span className={styles.xp}>+{habit.xpReward} XP</span>
+        <div className={styles.rewardsRow}>
+          <span className={styles.xp}>+{habit.xpReward} XP</span>
+          <span className={styles.gold}><Coins size={12} /> +5</span>
+        </div>
       </div>
 
       {streak > 0 && (
@@ -81,7 +84,9 @@ export function HabitCard({ habitWithLog, onToggle, onDelete }: HabitCardProps) 
         className={styles.deleteBtn}
         onClick={(e) => {
           e.stopPropagation();
-          onDelete(habit.id);
+          if (window.confirm(`Tem certeza que deseja deletar o hábito "${habit.title}"?`)) {
+            onDelete(habit.id);
+          }
         }}
         aria-label={`Remover "${habit.title}"`}
       >
