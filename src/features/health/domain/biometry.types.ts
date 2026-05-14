@@ -12,6 +12,7 @@ export interface Biometry {
 }
 
 export const DEFAULT_BIOMARKERS = [
+  { key: 'body_fat', label: '% Gordura Corporal', unit: '%', type: 'number', normalMin: 10, normalMax: 22 },
   { key: 'glicose', label: 'Glicose', unit: 'mg/dL', type: 'number', normalMin: 70, normalMax: 100 },
   { key: 'colesterol_total', label: 'Colesterol Total', unit: 'mg/dL', type: 'number', normalMin: 0, normalMax: 200 },
   { key: 'hdl', label: 'HDL', unit: 'mg/dL', type: 'number', normalMin: 40, normalMax: 999 },

@@ -1,0 +1,147 @@
+.wrapper {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* Outer rotating glow ring */
+.ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateY(calc(-1 * var(--label-offset, 0px)));
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: 0.6;
+  animation: rotate 14s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Smaller offset so the ring stays centered when label takes height */
+.sm .ring,
+.md .ring,
+.lg .ring {
+  --label-offset: 0px;
+}
+
+.body {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    160deg,
+    rgba(124, 58, 237, 0.18),
+    rgba(6, 182, 212, 0.12)
+  );
+  border: 1px solid var(--border-default);
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow:
+    inset 0 0 24px rgba(0, 0, 0, 0.35),
+    0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.bodyEmpty {
+  background: var(--bg-elevated);
+  opacity: 0.7;
+}
+
+.svgWrap {
+  width: 78%;
+  height: 78%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 4px rgba(124, 58, 237, 0.35));
+}
+
+/* Level emoji badge in the corner */
+.badge {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  border: 2px solid var(--accent-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1;
+  z-index: 2;
+}
+
+.sm .badge {
+  width: 22px;
+  height: 22px;
+  font-size: 11px;
+  right: -2px;
+  bottom: -2px;
+}
+
+.lg .badge {
+  width: 42px;
+  height: 42px;
+  font-size: 22px;
+}
+
+/* Label under the avatar */
+.label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  transition: transform var(--transition-base);
+}
+
+.labelHover {
+  transform: translateY(-2px);
+}
+
+.labelShape {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.labelLevel {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.labelEmpty {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.sm .labelShape {
+  font-size: 0.75rem;
+}
+.lg .labelShape {
+  font-size: 1.05rem;
+}
+
+@keyframes rotate {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

@@ -54,7 +54,8 @@ export function AvatarDisplay({ sprite, stageName, level, size = 'md' }: AvatarD
   );
 }
 
-function getAvatarEmoji(level: number): string {
+/** Exported so other components (e.g. BodyAvatar) can show the same tier emoji. */
+export function getAvatarEmoji(level: number): string {
   if (level >= 30) return '🐉';
   if (level >= 20) return '⚔️';
   if (level >= 10) return '🛡️';

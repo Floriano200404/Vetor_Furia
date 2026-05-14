@@ -26,3 +26,18 @@ export { BodySummary } from './components/BodySummary';
 export { WorkoutTemplates } from './components/WorkoutTemplates';
 export { OneRepMaxCalculator } from './components/OneRepMaxCalculator';
 export { ProgressionChart } from './components/ProgressionChart';
+export { WorkoutHistoryList } from './components/WorkoutHistoryList';
+export { NewWorkoutForm } from './components/NewWorkoutForm';
+export { WorkoutStatsPanel } from './components/WorkoutStatsPanel';
+export { BodyAvatar } from './components/BodyAvatar';
+export { BodyTimelineSlider } from './components/BodyTimelineSlider';
+export { useWorkoutDraft } from './hooks/useWorkoutDraft';
+export {
+  getBodyShape,
+  getBodyShapeAt,
+  getLevelTierColor,
+  calculateBMI,
+  BODY_SHAPE_LABELS,
+  BODY_SHAPE_DESCRIPTIONS,
+} from './domain/body-shape';
+export type { BodyShape } from './domain/body-shape';

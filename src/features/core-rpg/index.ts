@@ -1,5 +1,5 @@
 export { XPBar } from './components/XPBar';
-export { AvatarDisplay } from './components/AvatarDisplay';
+export { AvatarDisplay, getAvatarEmoji } from './components/AvatarDisplay';
 export { LevelBadge } from './components/LevelBadge';
 export { LevelUpModal } from './components/LevelUpModal';
 export { HPBar } from './components/HPBar';

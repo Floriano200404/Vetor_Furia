@@ -7,11 +7,14 @@
 
 import { AuthProvider } from '@/shared/providers/AuthProvider';
 import { ToastProvider } from '@/shared/components/Toast';
+import { ConfirmProvider } from '@/shared/components/ConfirmDialog';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
-      <ToastProvider>{children}</ToastProvider>
+      <ToastProvider>
+        <ConfirmProvider>{children}</ConfirmProvider>
+      </ToastProvider>
     </AuthProvider>
   );
 }

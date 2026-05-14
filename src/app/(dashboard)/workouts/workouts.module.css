@@ -54,6 +54,12 @@
   gap: var(--space-md);
 }
 
+.avatarHeader {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-lg) 0 var(--space-xl);
+}
+
 /* 1RM badge shown next to compound lift names in workout history */
 .exSummaryName {
   display: inline-flex;

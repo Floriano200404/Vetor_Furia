@@ -7,11 +7,13 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Zap, Calendar, TrendingUp, Flame, Dumbbell, BookOpen, CheckSquare, User, Edit3, Save } from 'lucide-react';
-import { usePlayerStats, AvatarDisplay, LevelBadge } from '@/features/core-rpg';
+import { usePlayerStats, LevelBadge, getAvatarEmoji } from '@/features/core-rpg';
 import { useAuth } from '@/shared/providers/AuthProvider';
 import { getPlayer, savePlayer, getLedgerEntries } from '@/features/core-rpg/services/xp-ledger.service';
 import type { XPEntry } from '@/features/core-rpg';
+import { BodyAvatar, useBiometry } from '@/features/health';
 import { useToast } from '@/shared/components/Toast';
+import { DataBackupSection } from '@/shared/components/DataBackupSection';
 import styles from './profile.module.css';
 
 const containerVariants = {
@@ -34,6 +36,7 @@ const SOURCE_ICONS: Record<string, { icon: typeof Zap; color: string; label: str
 export default function ProfilePage() {
   const { stats, recentXP, refreshStats } = usePlayerStats();
   const { displayName: authName, isFirebaseMode } = useAuth();
+  const { records: bioRecs } = useBiometry();
   const toast = useToast();
   const allEntries = useMemo(() => getLedgerEntries(), []);
   const [editingName, setEditingName] = useState(false);
@@ -95,11 +98,12 @@ export default function ProfilePage() {
       {/* Hero Section */}
       <motion.div className={styles.hero} variants={itemVariants}>
         <div className={styles.avatarSection}>
-          <AvatarDisplay
-            sprite={stats.avatarSprite}
-            stageName={stats.avatarStage}
+          <BodyAvatar
+            biometry={bioRecs[0] || null}
             level={stats.level}
+            levelEmoji={getAvatarEmoji(stats.level)}
             size="lg"
+            showLabel
           />
           <LevelBadge level={stats.level} size="lg" />
         </div>
@@ -224,6 +228,10 @@ export default function ProfilePage() {
             <button disabled={currentPage >= totalPages - 1} onClick={() => setCurrentPage(currentPage + 1)}>Próximo →</button>
           </div>
         )}
+      </motion.div>
+
+      <motion.div variants={itemVariants}>
+        <DataBackupSection />
       </motion.div>
     </motion.div>
   );
