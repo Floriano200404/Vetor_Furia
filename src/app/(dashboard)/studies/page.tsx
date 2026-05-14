@@ -48,7 +48,7 @@ export default function StudiesPage() {
                 fill="none" stroke="url(#timerGrad)" strokeWidth="8"
                 strokeLinecap="round"
                 strokeDasharray={553}
-                animate={{ strokeDashoffset: 553 * (1 - timer.progress) }}
+                animate={{ strokeDashoffset: 553 * (1 - (timer.progress || 0)) }}
                 transition={{ type:'spring', stiffness:40, damping:15 }}
                 transform="rotate(-90 100 100)"
               />

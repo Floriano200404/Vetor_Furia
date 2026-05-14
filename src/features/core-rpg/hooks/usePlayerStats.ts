@@ -26,10 +26,11 @@ export interface UsePlayerStatsReturn {
   refreshStats: () => void;
 }
 
+// Global flag to prevent duplicate listener registration
+let isGlobalListenerRegistered = false;
+
 export function usePlayerStats(): UsePlayerStatsReturn {
   const [stats, setStats] = useState<PlayerStats>(() => {
-    // Retorna algo vazio no primeiro render (server side safe)
-    // Depois é hidratado no useEffect
     return {
       totalXP: 0, level: 1, avatarStage: '1', avatarSprite: 'avatar_1.png',
       xpForCurrentLevel: 0, xpForNextLevel: 10, xpProgress: 0, levelTitle: '1',
@@ -51,9 +52,12 @@ export function usePlayerStats(): UsePlayerStatsReturn {
     refreshStats();
   }, [refreshStats]);
 
-  // Listen for XP events
+  // Global listeners registration (runs once)
   useEffect(() => {
-    const unsubscribe = eventBus.on<XPEarnedPayload>(XP_EVENTS.XP_EARNED, (payload) => {
+    if (isGlobalListenerRegistered) return;
+    isGlobalListenerRegistered = true;
+
+    eventBus.on<XPEarnedPayload>(XP_EVENTS.XP_EARNED, (payload) => {
       const result = addXPEntry({
         userId: DEFAULT_USER_ID,
         amount: payload.amount,
@@ -62,14 +66,7 @@ export function usePlayerStats(): UsePlayerStatsReturn {
         description: payload.description,
       });
 
-      setStats(calculatePlayerStats(result.player));
-      setRecentXP(getRecentEntries(10));
-
       if (result.leveledUp) {
-        setIsLevelingUp(true);
-        setNewLevel(result.player.level);
-
-        // Also emit LEVEL_UP event
         eventBus.emit(XP_EVENTS.LEVEL_UP, {
           userId: result.player.uid,
           previousLevel: result.previousLevel,
@@ -79,44 +76,50 @@ export function usePlayerStats(): UsePlayerStatsReturn {
           totalXP: result.player.totalXP,
         });
       }
+
+      eventBus.emit('STATS_CHANGED', { newLevel: result.leveledUp ? result.player.level : null });
     });
 
-    const unsubDamage = eventBus.on<HPDamagePayload>(GAME_EVENTS.HP_DAMAGE, (payload) => {
+    eventBus.on<HPDamagePayload>(GAME_EVENTS.HP_DAMAGE, (payload) => {
       const p = getPlayer();
       p.hp = Math.max(0, p.hp - payload.amount);
       savePlayer(p);
-      setStats(calculatePlayerStats(p));
+      eventBus.emit('STATS_CHANGED', { newLevel: null });
     });
 
-    const unsubHeal = eventBus.on<HPHealedPayload>(GAME_EVENTS.HP_HEALED, (payload) => {
+    eventBus.on<HPHealedPayload>(GAME_EVENTS.HP_HEALED, (payload) => {
       const p = getPlayer();
       p.hp = Math.min(p.maxHp, p.hp + payload.amount);
       savePlayer(p);
-      setStats(calculatePlayerStats(p));
+      eventBus.emit('STATS_CHANGED', { newLevel: null });
     });
 
-    const unsubGoldEarned = eventBus.on<GoldEarnedPayload>(GAME_EVENTS.GOLD_EARNED, (payload) => {
+    eventBus.on<GoldEarnedPayload>(GAME_EVENTS.GOLD_EARNED, (payload) => {
       const p = getPlayer();
       p.gold += payload.amount;
       savePlayer(p);
-      setStats(calculatePlayerStats(p));
+      eventBus.emit('STATS_CHANGED', { newLevel: null });
     });
 
-    const unsubGoldSpent = eventBus.on<GoldSpentPayload>(GAME_EVENTS.GOLD_SPENT, (payload) => {
+    eventBus.on<GoldSpentPayload>(GAME_EVENTS.GOLD_SPENT, (payload) => {
       const p = getPlayer();
       p.gold = Math.max(0, p.gold - payload.amount);
       savePlayer(p);
-      setStats(calculatePlayerStats(p));
+      eventBus.emit('STATS_CHANGED', { newLevel: null });
     });
-
-    return () => {
-      unsubscribe();
-      unsubDamage();
-      unsubHeal();
-      unsubGoldEarned();
-      unsubGoldSpent();
-    };
   }, []);
+
+  // Listen to state changes from the global listener
+  useEffect(() => {
+    const unsub = eventBus.on('STATS_CHANGED', (payload: any) => {
+      refreshStats();
+      if (payload.newLevel !== null) {
+        setIsLevelingUp(true);
+        setNewLevel(payload.newLevel);
+      }
+    });
+    return () => { unsub(); };
+  }, [refreshStats]);
 
   const dismissLevelUp = useCallback(() => {
     setIsLevelingUp(false);

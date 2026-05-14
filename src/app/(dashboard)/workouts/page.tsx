@@ -65,6 +65,17 @@ export default function WorkoutsPage() {
     return data;
   }, [exs]);
 
+  // Apply overload suggestion to all sets of an exercise
+  const applySuggestion = useCallback((exId: string, weight: number, reps: number) => {
+    setExs(prev => prev.map(e => {
+      if (e.id !== exId) return e;
+      return {
+        ...e,
+        sets: e.sets.map(s => ({ ...s, weight, reps }))
+      };
+    }));
+  }, []);
+
   const saveW = ()=>{if(!wName.trim()||!exs.length)return;addWorkout({name:wName,exercises:exs,durationMinutes:wDur});setWName('');setExs([]);setWDur(60);setShowForm(false);};
   const saveB = ()=>{const w=parseFloat(bw),h=parseFloat(bh);if(isNaN(w)||isNaN(h))return;const p:Record<string,number|string>={};Object.entries(bm).forEach(([k,v])=>{const n=parseFloat(v);p[k]=isNaN(n)?v:n;});addBiometry({weight:w,height:h,biomarkers:p});setShowBio(false);};
 
@@ -125,9 +136,15 @@ export default function WorkoutsPage() {
                         Último: <strong>{overload.maxWeight}kg × {overload.avgReps} reps</strong>
                         <span className={styles.overloadMeta}> ({overload.totalSets} séries · {daysAgo(overload.date)})</span>
                       </div>
-                      <div className={styles.overloadSuggestion}>
+                      <div 
+                        className={styles.overloadSuggestion}
+                        onClick={() => applySuggestion(ex.id, overload.suggestedWeight, overload.avgReps)}
+                        style={{ cursor: 'pointer' }}
+                        title="Clique para aplicar a todos os sets"
+                      >
                         💪 Sugere: <strong>{overload.suggestedWeight}kg</strong>
                         <span className={styles.overloadIncrease}> (+{Math.round((overload.suggestedWeight - overload.maxWeight) * 10) / 10}kg)</span>
+                        <span style={{ fontSize: '0.75rem', opacity: 0.6, marginLeft: 'auto' }}> (Clique para aplicar)</span>
                       </div>
                     </div>
                   </motion.div>
@@ -138,8 +155,8 @@ export default function WorkoutsPage() {
                   {ex.sets.map((s,i)=>(
                     <div key={i} className={`${styles.setRow} ${s.completed ? styles.setCompleted : ''}`}>
                       <span className={styles.setNumber}>{i+1}</span>
-                      <input type="number" className={styles.setInput} value={s.reps} onChange={e=>updSet(ex.id,i,'reps',parseInt(e.target.value)||0)}/>
-                      <input type="number" className={styles.setInput} value={s.weight} onChange={e=>updSet(ex.id,i,'weight',parseFloat(e.target.value)||0)}/>
+                      <input type="number" className={styles.setInput} value={s.reps} onChange={e=>updSet(ex.id,i,'reps',parseInt(e.target.value)||0)} onFocus={e=>e.target.select()}/>
+                      <input type="number" className={styles.setInput} value={s.weight} onChange={e=>updSet(ex.id,i,'weight',parseFloat(e.target.value)||0)} onFocus={e=>e.target.select()}/>
                       <button
                         className={`${styles.checkBtn} ${s.completed ? styles.checkBtnDone : ''}`}
                         onClick={() => toggleSetCompleted(ex.id, i)}
