@@ -1,0 +1,263 @@
+
+> vetor_furia@0.1.0 lint
+> eslint
+
+
+/Users/floriano/Documents/vetor_furia/src/app/(auth)/login/page.tsx
+  15:70  warning  'isLoading' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/floriano/Documents/vetor_furia/src/app/(dashboard)/habits/page.tsx
+  9:30  warning  'Flame' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/floriano/Documents/vetor_furia/src/app/(dashboard)/page.tsx
+  135:32  warning  'i' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/floriano/Documents/vetor_furia/src/app/(dashboard)/profile/page.tsx
+   9:85  warning  'User' is defined but never used               @typescript-eslint/no-unused-vars
+  35:18  warning  'recentXP' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/floriano/Documents/vetor_furia/src/app/(dashboard)/store/page.tsx
+   8:18  warning  'AnimatePresence' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+  36:18  warning  'refreshStats' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-unused-vars
+  46:5   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/floriano/Documents/vetor_furia/src/app/(dashboard)/store/page.tsx:46:5
+  44 |
+  45 |   useEffect(() => {
+> 46 |     setRewards(getRewards());
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  47 |   }, []);
+  48 |
+  49 |   const handleAdd = () => {  react-hooks/set-state-in-effect
+
+/Users/floriano/Documents/vetor_furia/src/app/(dashboard)/studies/page.tsx
+  119:67   error  Do not pass children as props. Instead, nest children between the opening and closing tags  react/no-children-prop
+  146:113  error  Do not pass children as props. Instead, nest children between the opening and closing tags  react/no-children-prop
+
+/Users/floriano/Documents/vetor_furia/src/app/(dashboard)/workouts/page.tsx
+  137:68  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/floriano/Documents/vetor_furia/src/features/core-rpg/components/ActivityHeatmap.tsx
+  41:53  warning  'maxDaily' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/floriano/Documents/vetor_furia/src/features/core-rpg/components/GoldDisplay.tsx
+  23:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/floriano/Documents/vetor_furia/src/features/core-rpg/components/GoldDisplay.tsx:23:7
+  21 |     if (gold !== prevGold) {
+  22 |       const amount = gold - prevGold;
+> 23 |       setDiff({ amount, id: Date.now() });
+     |       ^^^^^^^ Avoid calling setState() directly within an effect
+  24 |       setPrevGold(gold);
+  25 |       
+  26 |       const timer = setTimeout(() => setDiff(null), 2000);  react-hooks/set-state-in-effect
+
+/Users/floriano/Documents/vetor_furia/src/features/core-rpg/hooks/usePlayerStats.ts
+   16:15  warning  'Player' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             @typescript-eslint/no-unused-vars
+   52:5   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/floriano/Documents/vetor_furia/src/features/core-rpg/hooks/usePlayerStats.ts:52:5
+  50 |   // Initialize
+  51 |   useEffect(() => {
+> 52 |     refreshStats();
+     |     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  53 |   }, [refreshStats]);
+  54 |
+  55 |   // Global listeners registration (runs once)  react-hooks/set-state-in-effect
+  114:58  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-explicit-any
+
+/Users/floriano/Documents/vetor_furia/src/features/core-rpg/services/daily-check.service.ts
+  13:10  warning  'getHabitsWithLogs' is defined but never used  @typescript-eslint/no-unused-vars
+  58:41  error    Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+
+/Users/floriano/Documents/vetor_furia/src/features/core-rpg/services/xp-ledger.service.ts
+  150:45  warning  'la' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/floriano/Documents/vetor_furia/src/features/habits/components/HabitTemplateSelector.tsx
+  8:10  warning  'Plus' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/floriano/Documents/vetor_furia/src/features/habits/domain/habit-templates.ts
+  5:15  warning  'Habit' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/floriano/Documents/vetor_furia/src/features/habits/hooks/useHabits.ts
+  30:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/floriano/Documents/vetor_furia/src/features/habits/hooks/useHabits.ts:30:5
+  28 |
+  29 |   useEffect(() => {
+> 30 |     refresh();
+     |     ^^^^^^^ Avoid calling setState() directly within an effect
+  31 |   }, [refresh]);
+  32 |
+  33 |   const handleAddHabit = useCallback((data: { title: string; icon: string; xpReward: number }) => {  react-hooks/set-state-in-effect
+
+/Users/floriano/Documents/vetor_furia/src/features/health/hooks/useBiometry.ts
+  20:21  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/floriano/Documents/vetor_furia/src/features/health/hooks/useBiometry.ts:20:21
+  18 |   }, []);
+  19 |
+> 20 |   useEffect(() => { refresh(); }, [refresh]);
+     |                     ^^^^^^^ Avoid calling setState() directly within an effect
+  21 |
+  22 |   const handleAddBiometry = useCallback((data: {
+  23 |     weight: number;  react-hooks/set-state-in-effect
+
+/Users/floriano/Documents/vetor_furia/src/features/health/hooks/useWorkouts.ts
+  10:50  warning  'calculateWorkoutXP' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+  20:21  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/floriano/Documents/vetor_furia/src/features/health/hooks/useWorkouts.ts:20:21
+  18 |   }, []);
+  19 |
+> 20 |   useEffect(() => { refresh(); }, [refresh]);
+     |                     ^^^^^^^ Avoid calling setState() directly within an effect
+  21 |
+  22 |   const handleAddWorkout = useCallback((data: {
+  23 |     name: string;  react-hooks/set-state-in-effect
+
+/Users/floriano/Documents/vetor_furia/src/features/studies/components/AmbientPlayer.tsx
+  9:18  warning  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/floriano/Documents/vetor_furia/src/features/studies/components/StudyStats.tsx
+  24:17  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/floriano/Documents/vetor_furia/src/features/studies/components/StudyStats.tsx:24:17
+  22 |
+  23 |     // Sessions this week
+> 24 |     const now = Date.now();
+     |                 ^^^^^^^^^^ Cannot call impure function
+  25 |     const weekAgo = now - 7 * 24 * 60 * 60 * 1000;
+  26 |     const thisWeek = sessions.filter(s => s.startedAt >= weekAgo);
+  27 |     const weekMinutes = thisWeek.reduce((sum, s) => sum + s.durationMinutes, 0);  react-hooks/purity
+
+/Users/floriano/Documents/vetor_furia/src/features/studies/hooks/useStudySessions.ts
+  11:21  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/floriano/Documents/vetor_furia/src/features/studies/hooks/useStudySessions.ts:11:21
+   9 |   const [sessions, setSessions] = useState<StudySession[]>([]);
+  10 |   const refresh = useCallback(() => setSessions(getSessions()), []);
+> 11 |   useEffect(() => { refresh(); }, [refresh]);
+     |                     ^^^^^^^ Avoid calling setState() directly within an effect
+  12 |
+  13 |   const handleAdd = useCallback((data: { subject: string; durationMinutes: number; markdownNotes: string; startedAt: number }) => {
+  14 |     const session = addSession(data);  react-hooks/set-state-in-effect
+
+/Users/floriano/Documents/vetor_furia/src/features/studies/hooks/useTimer.ts
+  49:126  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/floriano/Documents/vetor_furia/src/features/studies/hooks/useTimer.ts:49:126
+  47 |   const isComplete = elapsed >= target;
+  48 |
+> 49 |   return { isRunning, elapsed, minutes, seconds, progress, isComplete, start, pause, reset, target, setTargetMin, startTime: startTimeRef.current };
+     |                                                                                                                              ^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  50 | }
+  51 |  react-hooks/refs
+  49:126  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/Users/floriano/Documents/vetor_furia/src/features/studies/hooks/useTimer.ts:49:126
+  47 |   const isComplete = elapsed >= target;
+  48 |
+> 49 |   return { isRunning, elapsed, minutes, seconds, progress, isComplete, start, pause, reset, target, setTargetMin, startTime: startTimeRef.current };
+     |                                                                                                                              ^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  50 | }
+  51 |  react-hooks/refs
+
+/Users/floriano/Documents/vetor_furia/src/lib/storage/firestore-adapter.ts
+  16:3  warning  'orderBy' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/floriano/Documents/vetor_furia/src/shared/components/Header.tsx
+  18:33  warning  'displayName' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/floriano/Documents/vetor_furia/src/shared/components/RestTimer.tsx
+  84:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/floriano/Documents/vetor_furia/src/shared/components/RestTimer.tsx:84:7
+  82 |   useEffect(() => {
+  83 |     if (isOpen) {
+> 84 |       setRemaining(totalDuration);
+     |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  85 |       setIsRunning(true);
+  86 |       setIsDone(false);
+  87 |     } else {  react-hooks/set-state-in-effect
+
+/Users/floriano/Documents/vetor_furia/src/shared/components/Toast.tsx
+  8:33  warning  'useEffect' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/floriano/Documents/vetor_furia/src/shared/providers/AuthProvider.tsx
+  48:7   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/floriano/Documents/vetor_furia/src/shared/providers/AuthProvider.tsx:48:7
+  46 |     if (!isFirebaseMode || !auth) {
+  47 |       // No Firebase — single-user mode
+> 48 |       setIsLoading(false);
+     |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  49 |       return;
+  50 |     }
+  51 |  react-hooks/set-state-in-effect
+  65:19  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-explicit-any
+  76:19  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-explicit-any
+  88:19  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-explicit-any
+
+✖ 38 problems (19 errors, 19 warnings)
+

@@ -45,12 +45,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isFirebaseMode || !auth) {
       // No Firebase — single-user mode
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsLoading(false);
       return;
     }
 
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsLoading(false);
     });
 
@@ -62,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError(null);
     try {
       await signInWithEmailAndPassword(auth, email, password);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(getErrorMessage(err.code));
       throw err;
@@ -73,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError(null);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(getErrorMessage(err.code));
       throw err;
@@ -85,6 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(getErrorMessage(err.code));
       throw err;

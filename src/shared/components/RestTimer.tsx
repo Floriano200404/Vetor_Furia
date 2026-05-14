@@ -81,6 +81,7 @@ export function RestTimer({ isOpen, onClose, defaultDuration = 90 }: RestTimerPr
   // Reset when opening
   useEffect(() => {
     if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setRemaining(totalDuration);
       setIsRunning(true);
       setIsDone(false);

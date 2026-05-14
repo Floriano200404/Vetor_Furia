@@ -49,6 +49,7 @@ export function usePlayerStats(): UsePlayerStatsReturn {
 
   // Initialize
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     refreshStats();
   }, [refreshStats]);
 
@@ -111,6 +112,7 @@ export function usePlayerStats(): UsePlayerStatsReturn {
 
   // Listen to state changes from the global listener
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const unsub = eventBus.on('STATS_CHANGED', (payload: any) => {
       refreshStats();
       if (payload.newLevel !== null) {

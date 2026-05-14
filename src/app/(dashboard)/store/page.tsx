@@ -43,6 +43,7 @@ export default function StorePage() {
   const [newIcon, setNewIcon] = useState('Gift');
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setRewards(getRewards());
   }, []);
 

@@ -116,7 +116,7 @@ export default function StudiesPage() {
             <textarea className={styles.notesEditor} placeholder="Escreva suas anotações em Markdown...&#10;&#10;# Título&#10;- Ponto importante&#10;- Outro ponto&#10;&#10;**Negrito** e _itálico_" value={notes} onChange={e=>setNotes(e.target.value)}/>
           ) : (
             <div className={styles.notesPreview}>
-              {notes ? <ReactMarkdown remarkPlugins={[remarkGfm]} children={notes} /> : <p className={styles.previewEmpty}>Nenhuma nota escrita ainda.</p>}
+              {notes ? <ReactMarkdown remarkPlugins={[remarkGfm]}>{notes}</ReactMarkdown> : <p className={styles.previewEmpty}>Nenhuma nota escrita ainda.</p>}
             </div>
           )}
           {(timer.minutes >= 1 || timer.seconds >= 30) && (
@@ -143,7 +143,7 @@ export default function StudiesPage() {
               <div><h4 className={styles.sessionSubject}>{s.subject}</h4><span className={styles.sessionDate}>{new Date(s.startedAt).toLocaleDateString('pt-BR')} · {s.durationMinutes}min</span></div>
               <div className={styles.sessionActions}><span className={styles.sessionXP}>+{s.xpEarned} XP</span><button className={styles.delBtn} onClick={()=>deleteSession(s.id)}><Trash2 size={14}/></button></div>
             </div>
-            {s.markdownNotes && <div className={styles.sessionNotes}><ReactMarkdown remarkPlugins={[remarkGfm]} children={s.markdownNotes.slice(0,200) + (s.markdownNotes.length>200?'...':'')} /></div>}
+            {s.markdownNotes && <div className={styles.sessionNotes}><ReactMarkdown remarkPlugins={[remarkGfm]}>{s.markdownNotes.slice(0,200) + (s.markdownNotes.length>200?'...':'')}</ReactMarkdown></div>}
           </div>
         ))}
       </div>

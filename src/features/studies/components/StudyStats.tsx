@@ -21,6 +21,7 @@ export function StudyStats({ sessions }: StudyStatsProps) {
     const totalHours = Math.round(totalMinutes / 60 * 10) / 10;
 
     // Sessions this week
+    // eslint-disable-next-line react-hooks/purity
     const now = Date.now();
     const weekAgo = now - 7 * 24 * 60 * 60 * 1000;
     const thisWeek = sessions.filter(s => s.startedAt >= weekAgo);

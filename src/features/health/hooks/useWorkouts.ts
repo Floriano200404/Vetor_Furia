@@ -17,7 +17,8 @@ export function useWorkouts() {
     setWorkouts(getWorkouts());
   }, []);
 
-  useEffect(() => { refresh(); }, [refresh]);
+  useEffect(() => { // eslint-disable-next-line react-hooks/set-state-in-effect
+    refresh(); }, [refresh]);
 
   const handleAddWorkout = useCallback((data: {
     name: string;

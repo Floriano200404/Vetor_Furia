@@ -55,6 +55,7 @@ function getYesterdayCompletionRate(): { completed: number; total: number; rate:
   
   if (habits.length === 0) return { completed: 0, total: 0, rate: -1 }; // -1 = no habits
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const yesterdayLogs = logs.filter((l: any) => l.date === yesterday && l.completed);
   const completedCount = yesterdayLogs.length;
   

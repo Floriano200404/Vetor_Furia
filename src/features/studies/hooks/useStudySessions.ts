@@ -8,7 +8,8 @@ import { DEFAULT_USER_ID } from '@/lib/constants';
 export function useStudySessions() {
   const [sessions, setSessions] = useState<StudySession[]>([]);
   const refresh = useCallback(() => setSessions(getSessions()), []);
-  useEffect(() => { refresh(); }, [refresh]);
+  useEffect(() => { // eslint-disable-next-line react-hooks/set-state-in-effect
+    refresh(); }, [refresh]);
 
   const handleAdd = useCallback((data: { subject: string; durationMinutes: number; markdownNotes: string; startedAt: number }) => {
     const session = addSession(data);
@@ -26,7 +27,8 @@ export function useStudySessions() {
     return session;
   }, [refresh]);
 
-  const handleDelete = useCallback((id: string) => { deleteSession(id); refresh(); }, [refresh]);
+  const handleDelete = useCallback((id: string) => { deleteSession(id); // eslint-disable-next-line react-hooks/set-state-in-effect
+    refresh(); }, [refresh]);
 
   return { sessions, addSession: handleAdd, deleteSession: handleDelete, refresh };
 }

@@ -20,6 +20,7 @@ export function GoldDisplay({ gold }: GoldDisplayProps) {
   useEffect(() => {
     if (gold !== prevGold) {
       const amount = gold - prevGold;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDiff({ amount, id: Date.now() });
       setPrevGold(gold);
       

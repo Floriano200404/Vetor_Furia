@@ -46,5 +46,5 @@ export function useTimer(targetMinutes: number = 25) {
   const progress = target > 0 ? Math.min(elapsed / target, 1) : 0;
   const isComplete = elapsed >= target;
 
-  return { isRunning, elapsed, minutes, seconds, progress, isComplete, start, pause, reset, target, setTargetMin, startTime: startTimeRef.current };
+  return { isRunning, elapsed, minutes, seconds, progress, isComplete, start, pause, reset, target, setTargetMin, getStartTime: () => startTimeRef.current };
 }

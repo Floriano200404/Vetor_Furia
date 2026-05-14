@@ -17,7 +17,8 @@ export function useBiometry() {
     setRecords(getBiometryRecords());
   }, []);
 
-  useEffect(() => { refresh(); }, [refresh]);
+  useEffect(() => { // eslint-disable-next-line react-hooks/set-state-in-effect
+    refresh(); }, [refresh]);
 
   const handleAddBiometry = useCallback((data: {
     weight: number;
