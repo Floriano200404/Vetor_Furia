@@ -10,6 +10,7 @@ import { Flame, TrendingUp, Zap, Target, Calendar, BookOpen, Dumbbell, CheckSqua
 import { usePlayerStats, XPBar, AvatarDisplay, LevelBadge, ActivityHeatmap } from '@/features/core-rpg';
 import { getLedgerEntries } from '@/features/core-rpg/services/xp-ledger.service';
 import type { XPEntry } from '@/features/core-rpg';
+import { TodayMissions } from '@/features/missions';
 import styles from './page.module.css';
 
 const containerVariants = {
@@ -128,6 +129,11 @@ export default function DashboardPage() {
             />
           </div>
         </div>
+      </motion.section>
+
+      {/* Today's Missions — pending habits + suggestions */}
+      <motion.section variants={itemVariants}>
+        <TodayMissions />
       </motion.section>
 
       {/* Quick Stats Grid */}

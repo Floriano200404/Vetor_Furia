@@ -32,6 +32,10 @@ export { WorkoutStatsPanel } from './components/WorkoutStatsPanel';
 export { BodyAvatar } from './components/BodyAvatar';
 export { BodyTimelineSlider } from './components/BodyTimelineSlider';
 export { useWorkoutDraft } from './hooks/useWorkoutDraft';
+export { useCardio } from './hooks/useCardio';
+export { CardioPanel } from './components/CardioPanel';
+export type { CardioSession, CardioType, CardioIntensity } from './domain/cardio.types';
+export { CARDIO_CATALOG, calculateCardioXP, estimateCalories } from './domain/cardio.types';
 export {
   getBodyShape,
   getBodyShapeAt,

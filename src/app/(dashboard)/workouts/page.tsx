@@ -3,20 +3,21 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Dumbbell, Plus, X, Scale, BarChart3, History, ListChecks,
+  Dumbbell, Plus, X, Scale, BarChart3, History, ListChecks, Activity,
 } from 'lucide-react';
 import {
   useWorkouts, useBiometry,
   DEFAULT_BIOMARKERS, classifyBiomarker,
   BiometryChart, BodySummary, BodyAvatar, BodyTimelineSlider,
   WorkoutHistoryList, NewWorkoutForm, WorkoutStatsPanel,
+  CardioPanel,
 } from '@/features/health';
 import { usePlayerStats, getAvatarEmoji } from '@/features/core-rpg';
 import { RestTimer } from '@/shared/components/RestTimer';
 import { useToast } from '@/shared/components/Toast';
 import styles from './workouts.module.css';
 
-type TopTab = 'workouts' | 'biometry';
+type TopTab = 'workouts' | 'cardio' | 'biometry';
 type WorkoutSubTab = 'list' | 'new' | 'stats';
 
 export default function WorkoutsPage() {
@@ -86,6 +87,12 @@ export default function WorkoutsPage() {
             <Dumbbell size={16} /> Treinos
           </button>
           <button
+            className={`${styles.tab} ${tab === 'cardio' ? styles.tabActive : ''}`}
+            onClick={() => setTab('cardio')}
+          >
+            <Activity size={16} /> Cardio
+          </button>
+          <button
             className={`${styles.tab} ${tab === 'biometry' ? styles.tabActive : ''}`}
             onClick={() => setTab('biometry')}
           >
@@ -142,6 +149,8 @@ export default function WorkoutsPage() {
           {subTab === 'stats' && <WorkoutStatsPanel refreshKey={statsKey} />}
         </>
       )}
+
+      {tab === 'cardio' && <CardioPanel />}
 
       {tab === 'biometry' && !showBio && (
         <div>

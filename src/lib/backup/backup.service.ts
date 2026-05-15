@@ -23,6 +23,7 @@ export const BACKUP_KEYS = [
   'vetor_furia_habit_logs',
   'vetor_furia_last_daily_check',
   'vetor_furia_workouts',
+  'vetor_furia_cardio',
   'vetor_furia_biometry',
   'vetor_furia_study_sessions',
   'vetor_furia_rewards',
