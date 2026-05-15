@@ -9,12 +9,15 @@ import type {
   TxKind,
   MonthSummary,
   CategorySlice,
+  Budget,
+  BudgetStatus,
 } from '../domain/finance.types';
-import { monthKey } from '../domain/finance.types';
+import { monthKey, budgetStateOf } from '../domain/finance.types';
 import { getCategory } from '../domain/categories';
 
 const TX_KEY = 'vetor_furia_finance_tx';
 const RULE_KEY = 'vetor_furia_finance_recurring';
+const BUDGET_KEY = 'vetor_furia_finance_budgets';
 
 function genId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -209,4 +212,63 @@ export function getExpenseByCategory(month = monthKey()): CategorySlice[] {
 export function getPreviousMonthSummary(now = new Date()): MonthSummary {
   const prev = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   return getMonthSummary(monthKey(prev));
+}
+
+// --- Budgets ---
+
+export function getBudgets(): Budget[] {
+  return read<Budget>(BUDGET_KEY);
+}
+
+/** Upsert. A non-positive limit removes the budget for that category. */
+export function setBudget(categoryId: string, monthlyLimit: number): void {
+  const list = getBudgets().filter((b) => b.categoryId !== categoryId);
+  if (monthlyLimit > 0) {
+    list.push({ categoryId, monthlyLimit: Math.round(monthlyLimit * 100) / 100 });
+  }
+  write(BUDGET_KEY, list);
+}
+
+export function getBudgetFor(categoryId: string): Budget | undefined {
+  return getBudgets().find((b) => b.categoryId === categoryId);
+}
+
+/** Spending status for every category that has a budget set. */
+export function getBudgetStatuses(month = monthKey()): BudgetStatus[] {
+  const budgets = getBudgets();
+  if (budgets.length === 0) return [];
+
+  const spentByCat = new Map<string, number>();
+  for (const t of getMonthTransactions(month)) {
+    if (t.kind !== 'despesa') continue;
+    spentByCat.set(t.categoryId, (spentByCat.get(t.categoryId) ?? 0) + t.amount);
+  }
+
+  return budgets
+    .map((b) => {
+      const cat = getCategory(b.categoryId);
+      const spent = Math.round((spentByCat.get(b.categoryId) ?? 0) * 100) / 100;
+      return {
+        categoryId: b.categoryId,
+        label: cat?.label ?? b.categoryId,
+        icon: cat?.icon ?? '💸',
+        color: cat?.color ?? '#64748b',
+        limit: b.monthlyLimit,
+        spent,
+        ratio: b.monthlyLimit > 0 ? spent / b.monthlyLimit : 0,
+        state: budgetStateOf(spent, b.monthlyLimit),
+      };
+    })
+    .sort((a, b) => b.ratio - a.ratio);
+}
+
+/**
+ * Status for one category after a hypothetical/just-added expense — used to
+ * decide whether to fire an alert toast. Returns null if no budget set.
+ */
+export function getBudgetStatusForCategory(
+  categoryId: string,
+  month = monthKey(),
+): BudgetStatus | null {
+  return getBudgetStatuses(month).find((s) => s.categoryId === categoryId) ?? null;
 }

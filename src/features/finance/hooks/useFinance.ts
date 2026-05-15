@@ -6,13 +6,16 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
+import { useToast } from '@/shared/components/Toast';
 import type {
   Transaction,
   RecurringRule,
   MonthSummary,
   CategorySlice,
+  Budget,
+  BudgetStatus,
 } from '../domain/finance.types';
-import { monthKey } from '../domain/finance.types';
+import { monthKey, formatBRL } from '../domain/finance.types';
 import {
   getTransactions,
   addTransaction,
@@ -26,18 +29,25 @@ import {
   getPreviousMonthSummary,
   getExpenseByCategory,
   getTotalBalance,
+  getBudgets,
+  setBudget,
+  getBudgetStatuses,
+  getBudgetStatusForCategory,
   type AddTxInput,
   type AddRuleInput,
 } from '../services/finance.service';
 
 export function useFinance() {
+  const toast = useToast();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [rules, setRules] = useState<RecurringRule[]>([]);
+  const [budgets, setBudgets] = useState<Budget[]>([]);
   const [month] = useState<string>(() => monthKey());
 
   const refresh = useCallback(() => {
     setTransactions(getTransactions());
     setRules(getRecurringRules());
+    setBudgets(getBudgets());
   }, []);
 
   // Materialize recurring rules due this month, then load. Once on mount.
@@ -49,8 +59,21 @@ export function useFinance() {
 
   const addTx = useCallback((input: AddTxInput) => {
     addTransaction(input);
+    // Budget alert: only for expenses that have a budget set.
+    if (input.kind === 'despesa') {
+      const status = getBudgetStatusForCategory(input.categoryId);
+      if (status && status.state === 'estourou') {
+        toast.error(
+          `Orçamento de ${status.label} estourado: ${formatBRL(status.spent)} / ${formatBRL(status.limit)}`,
+        );
+      } else if (status && status.state === 'alerta') {
+        toast.warning(
+          `${status.label} em ${Math.round(status.ratio * 100)}% do orçamento (${formatBRL(status.spent)} / ${formatBRL(status.limit)})`,
+        );
+      }
+    }
     refresh();
-  }, [refresh]);
+  }, [refresh, toast]);
 
   const removeTx = useCallback((id: string) => {
     deleteTransaction(id);
@@ -73,14 +96,22 @@ export function useFinance() {
     refresh();
   }, [refresh]);
 
+  const updateBudget = useCallback((categoryId: string, limit: number) => {
+    setBudget(categoryId, limit);
+    refresh();
+  }, [refresh]);
+
   const summary: MonthSummary = getMonthSummary(month);
   const prevSummary: MonthSummary = getPreviousMonthSummary();
   const byCategory: CategorySlice[] = getExpenseByCategory(month);
   const totalBalance = getTotalBalance();
+  const budgetStatuses: BudgetStatus[] = getBudgetStatuses(month);
 
   return {
     transactions,
     rules,
+    budgets,
+    budgetStatuses,
     month,
     summary,
     prevSummary,
@@ -91,6 +122,7 @@ export function useFinance() {
     addRule,
     removeRule,
     toggleRule,
+    updateBudget,
     refresh,
   };
 }
