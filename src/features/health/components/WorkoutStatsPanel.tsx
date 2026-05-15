@@ -9,6 +9,7 @@
 
 import dynamic from 'next/dynamic';
 import { OneRepMaxCalculator } from './OneRepMaxCalculator';
+import { RecoveryMap } from './RecoveryMap';
 import styles from './WorkoutStatsPanel.module.css';
 
 const ProgressionChart = dynamic(
@@ -32,6 +33,7 @@ interface WorkoutStatsPanelProps {
 export function WorkoutStatsPanel({ refreshKey = 0 }: WorkoutStatsPanelProps) {
   return (
     <div className={styles.wrapper}>
+      <RecoveryMap key={`rec-${refreshKey}`} />
       <OneRepMaxCalculator />
       <ProgressionChart key={refreshKey} />
     </div>

@@ -18,9 +18,18 @@ export {
   getExerciseHistory,
   getLoggedExerciseNames,
   getWorkout1RM,
+  getLastSessionForExercise,
   isCompoundLift,
   COMPOUND_LIFTS,
 } from './services/workout-analytics.service';
+export {
+  getProgressionAdvice,
+  isBarbell,
+  weightIncrement,
+  loadBreakdown,
+  DEFAULT_REP_RANGE,
+} from './domain/progression';
+export type { ProgressionAdvice, ProgressionStatus } from './domain/progression';
 export { BiometryChart } from './components/BiometryChart';
 export { BodySummary } from './components/BodySummary';
 export { WorkoutTemplates } from './components/WorkoutTemplates';
@@ -34,6 +43,18 @@ export { BodyTimelineSlider } from './components/BodyTimelineSlider';
 export { useWorkoutDraft } from './hooks/useWorkoutDraft';
 export { useCardio } from './hooks/useCardio';
 export { CardioPanel } from './components/CardioPanel';
+export { TrainingPlanCard } from './components/TrainingPlanCard';
+export { RecoveryMap } from './components/RecoveryMap';
+export { ProgressPhotos } from './components/ProgressPhotos';
+export { getRecoveryMap, suggestNextGroup } from './services/recovery.service';
+export {
+  getTrainingPlan,
+  saveTrainingPlan,
+  todaysFocus,
+  PLAN_FOCUSES,
+  focusDef,
+} from './domain/training-plan';
+export type { PlanFocus, WeeklyPlan } from './domain/training-plan';
 export type { CardioSession, CardioType, CardioIntensity } from './domain/cardio.types';
 export { CARDIO_CATALOG, calculateCardioXP, estimateCalories } from './domain/cardio.types';
 export {

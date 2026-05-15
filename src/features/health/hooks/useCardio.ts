@@ -35,7 +35,7 @@ export function useCardio() {
       eventBus.emit(XP_EVENTS.XP_EARNED, {
         userId: DEFAULT_USER_ID,
         amount: session.totalXP,
-        source: 'workouts' as const,
+        source: 'cardio' as const,
         sourceId: session.id,
         description: `💨 Cardio (${session.type}, ${session.durationMinutes}min)`,
         timestamp: Date.now(),

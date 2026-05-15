@@ -10,7 +10,8 @@ import { Flame, TrendingUp, Zap, Target, Calendar, BookOpen, Dumbbell, CheckSqua
 import { usePlayerStats, XPBar, AvatarDisplay, LevelBadge, ActivityHeatmap } from '@/features/core-rpg';
 import { getLedgerEntries } from '@/features/core-rpg/services/xp-ledger.service';
 import type { XPEntry } from '@/features/core-rpg';
-import { TodayMissions } from '@/features/missions';
+import { TodayMissions, MentorCard, WeeklySummaryModal, QuickLogFAB, BossBattleCard } from '@/features/missions';
+import { TrainingPlanCard } from '@/features/health';
 import styles from './page.module.css';
 
 const containerVariants = {
@@ -131,9 +132,27 @@ export default function DashboardPage() {
         </div>
       </motion.section>
 
+      <WeeklySummaryModal />
+      <QuickLogFAB />
+
+      {/* Boss Battle of the day */}
+      <motion.section variants={itemVariants}>
+        <BossBattleCard />
+      </motion.section>
+
       {/* Today's Missions — pending habits + suggestions */}
       <motion.section variants={itemVariants}>
         <TodayMissions />
+      </motion.section>
+
+      {/* Training plan — today's focus + weekly split */}
+      <motion.section variants={itemVariants}>
+        <TrainingPlanCard />
+      </motion.section>
+
+      {/* Mentor — automated coaching insights */}
+      <motion.section variants={itemVariants}>
+        <MentorCard />
       </motion.section>
 
       {/* Quick Stats Grid */}

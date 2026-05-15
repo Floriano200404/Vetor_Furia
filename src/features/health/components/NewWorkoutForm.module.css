@@ -251,6 +251,64 @@
   margin-left: auto;
 }
 
+/* --- Progression advice --- */
+.advHeadline {
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.advDetail {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin-top: 4px;
+}
+
+.advBreakdown {
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-top: 6px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  display: inline-block;
+}
+
+.advApply {
+  display: inline-block;
+  margin-top: var(--space-sm);
+  background: var(--accent-success);
+  color: white;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.advApply:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Status-tinted left border on the advice card */
+.adv_progress {
+  border-left: 3px solid var(--accent-success);
+}
+.adv_hold {
+  border-left: 3px solid var(--accent-warning);
+}
+.adv_deload {
+  border-left: 3px solid var(--accent-danger);
+}
+
 /* Sets table */
 .setsSection {
   padding: 0 var(--space-md) var(--space-md);
