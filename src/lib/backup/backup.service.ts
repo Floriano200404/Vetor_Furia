@@ -30,7 +30,6 @@ export const BACKUP_KEYS = [
   'vetor_furia_store_rewards',
   'vetor_furia_redemptions',
   'vetor_furia_achievements',
-  'vetor_furia_training_plan',
   'vetor_furia_progress_photos',
   'vetor_furia_boss_battle',
   'vetor_furia_routines',
