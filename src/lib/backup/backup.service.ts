@@ -33,6 +33,8 @@ export const BACKUP_KEYS = [
   'vetor_furia_progress_photos',
   'vetor_furia_boss_battle',
   'vetor_furia_routines',
+  'vetor_furia_finance_tx',
+  'vetor_furia_finance_recurring',
 ] as const;
 
 export type BackupKey = (typeof BACKUP_KEYS)[number];
