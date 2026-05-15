@@ -43,7 +43,35 @@ export { BodyTimelineSlider } from './components/BodyTimelineSlider';
 export { useWorkoutDraft } from './hooks/useWorkoutDraft';
 export { useCardio } from './hooks/useCardio';
 export { CardioPanel } from './components/CardioPanel';
+export type { CardioSeed } from './components/CardioPanel';
+export { RoutinesPanel } from './components/RoutinesPanel';
+export { RoutineEditor } from './components/RoutineEditor';
+export { useRoutines } from './hooks/useRoutines';
+export type { WorkoutDraftSeed } from './hooks/useWorkoutDraft';
+export {
+  getRoutines,
+  addRoutine,
+  updateRoutine,
+  deleteRoutine,
+  getRoutinesForDay,
+  materializeStrengthSession,
+} from './services/routines.service';
+export {
+  isStrengthRoutine,
+  isCardioRoutine,
+  daysLabel,
+  todayWeekDay,
+  WEEKDAY_SHORT as ROUTINE_WEEKDAY_SHORT,
+} from './domain/workout-routine';
+export type {
+  Routine,
+  StrengthRoutine,
+  CardioRoutine,
+  RoutineExercise,
+  WeekDay as RoutineWeekDay,
+} from './domain/workout-routine';
 export { TrainingPlanCard } from './components/TrainingPlanCard';
+export { TodayRoutineCard } from './components/TodayRoutineCard';
 export { RecoveryMap } from './components/RecoveryMap';
 export { ProgressPhotos } from './components/ProgressPhotos';
 export { getRecoveryMap, suggestNextGroup } from './services/recovery.service';

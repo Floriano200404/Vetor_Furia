@@ -17,7 +17,7 @@ import { useToast } from '@/shared/components/Toast';
 import { EXERCISE_CATALOG, MUSCLE_GROUPS } from '../domain/exercise-catalog';
 import { getLastSessionForExercise } from '../services/workout-analytics.service';
 import { getProgressionAdvice, type ProgressionAdvice } from '../domain/progression';
-import { useWorkoutDraft } from '../hooks/useWorkoutDraft';
+import { useWorkoutDraft, type WorkoutDraftSeed } from '../hooks/useWorkoutDraft';
 import { WorkoutTemplates } from './WorkoutTemplates';
 import type { Exercise, WorkoutTemplate } from '../domain/workout.types';
 import styles from './NewWorkoutForm.module.css';
@@ -31,14 +31,17 @@ interface NewWorkoutFormProps {
   onCancel: () => void;
   /** Called when the user just completed a set — lets the host open the rest timer. */
   onSetCompleted?: () => void;
+  /** Pre-fills the form (used when starting a session from a routine). */
+  seed?: WorkoutDraftSeed;
 }
 
 export function NewWorkoutForm({
   onSubmit,
   onCancel,
   onSetCompleted,
+  seed,
 }: NewWorkoutFormProps) {
-  const draft = useWorkoutDraft();
+  const draft = useWorkoutDraft(seed);
   const confirm = useConfirm();
   const toast = useToast();
 

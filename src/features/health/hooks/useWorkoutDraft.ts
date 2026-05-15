@@ -53,8 +53,23 @@ function calcXP(count: number): number {
   return 30 + Math.max(0, count - 1) * 2;
 }
 
-export function useWorkoutDraft(): UseWorkoutDraftReturn {
-  const [draft, setDraft] = useState<WorkoutDraftState>(EMPTY);
+export interface WorkoutDraftSeed {
+  name?: string;
+  exercises?: Exercise[];
+  durationMinutes?: number;
+}
+
+export function useWorkoutDraft(seed?: WorkoutDraftSeed): UseWorkoutDraftReturn {
+  const [draft, setDraft] = useState<WorkoutDraftState>(() =>
+    seed
+      ? {
+          ...EMPTY,
+          name: seed.name ?? EMPTY.name,
+          exercises: seed.exercises ?? EMPTY.exercises,
+          durationMinutes: seed.durationMinutes ?? EMPTY.durationMinutes,
+        }
+      : EMPTY,
+  );
 
   // Mirror for synchronous reads (e.g. toggleSetCompleted needs to know the
   // pre-toggle state and return a boolean BEFORE setDraft's updater runs).

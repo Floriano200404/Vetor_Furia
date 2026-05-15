@@ -11,7 +11,7 @@ import { usePlayerStats, XPBar, AvatarDisplay, LevelBadge, ActivityHeatmap } fro
 import { getLedgerEntries } from '@/features/core-rpg/services/xp-ledger.service';
 import type { XPEntry } from '@/features/core-rpg';
 import { TodayMissions, MentorCard, WeeklySummaryModal, QuickLogFAB, BossBattleCard } from '@/features/missions';
-import { TrainingPlanCard } from '@/features/health';
+import { TodayRoutineCard } from '@/features/health';
 import styles from './page.module.css';
 
 const containerVariants = {
@@ -145,9 +145,9 @@ export default function DashboardPage() {
         <TodayMissions />
       </motion.section>
 
-      {/* Training plan — today's focus + weekly split */}
+      {/* Today's routine — actionable, links into the session */}
       <motion.section variants={itemVariants}>
-        <TrainingPlanCard />
+        <TodayRoutineCard />
       </motion.section>
 
       {/* Mentor — automated coaching insights */}
