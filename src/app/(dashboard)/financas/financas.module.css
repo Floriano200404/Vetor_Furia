@@ -26,6 +26,10 @@
   text-transform: capitalize;
 }
 
+.monthNav {
+  margin-top: var(--space-sm);
+}
+
 .tabs {
   display: flex;
   gap: var(--space-xs);

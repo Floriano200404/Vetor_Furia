@@ -45,6 +45,26 @@ export function monthKey(d: Date | number = new Date()): string {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 }
 
+/** Shift a "YYYY-MM" key by `delta` months (negative = past). */
+export function shiftMonth(key: string, delta: number): string {
+  const [y, m] = key.split('-').map((n) => parseInt(n, 10));
+  const d = new Date(y, m - 1 + delta, 1);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
+export function isCurrentMonth(key: string): boolean {
+  return key === monthKey();
+}
+
+/** "maio de 2026" for a "YYYY-MM" key. */
+export function monthLabel(key: string): string {
+  const [y, m] = key.split('-').map((n) => parseInt(n, 10));
+  return new Date(y, m - 1, 2, 12).toLocaleDateString('pt-BR', {
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
 export function formatBRL(value: number): string {
   return value.toLocaleString('pt-BR', {
     style: 'currency',
