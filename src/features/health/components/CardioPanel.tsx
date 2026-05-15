@@ -10,7 +10,7 @@
  * splitting would force prop-drilling without real reuse.
  */
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Activity, Bike, Clock, Flame, Plus, Trash2, X,
@@ -35,20 +35,40 @@ function findCatalog(type: CardioType) {
   return CARDIO_CATALOG.find((c) => c.type === type) ?? CARDIO_CATALOG[0];
 }
 
-export function CardioPanel() {
+/** Pre-fill payload when a cardio session is started from a routine. */
+export interface CardioSeed {
+  type: CardioType;
+  durationMinutes: number;
+  intensity: CardioIntensity;
+}
+
+interface CardioPanelProps {
+  seed?: CardioSeed;
+  /** Called after the seed has been applied so the parent can clear it. */
+  onConsumeSeed?: () => void;
+}
+
+export function CardioPanel({ seed, onConsumeSeed }: CardioPanelProps = {}) {
   const { sessions, weeklyMinutes, addSession, deleteSession } = useCardio();
   const { records: bioRecs } = useBiometry();
   const latestWeight = bioRecs[0]?.weight ?? null;
   const confirm = useConfirm();
   const toast = useToast();
 
-  const [showForm, setShowForm] = useState(false);
-  const [type, setType] = useState<CardioType>('corrida');
-  const [duration, setDuration] = useState<number>(30);
+  const [showForm, setShowForm] = useState(Boolean(seed));
+  const [type, setType] = useState<CardioType>(seed?.type ?? 'corrida');
+  const [duration, setDuration] = useState<number>(seed?.durationMinutes ?? 30);
   const [distance, setDistance] = useState<string>('');
   const [calories, setCalories] = useState<string>('');
-  const [intensity, setIntensity] = useState<CardioIntensity>('moderada');
+  const [intensity, setIntensity] = useState<CardioIntensity>(seed?.intensity ?? 'moderada');
   const [notes, setNotes] = useState('');
+
+  // Seed is applied via lazy initial state above; tell the parent to clear it.
+  useEffect(() => {
+    if (seed && onConsumeSeed) onConsumeSeed();
+    // run once on mount — parent forces remount with a key when seeding
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const estimatedXP = useMemo(
     () => calculateCardioXP(duration, intensity, parseFloat(distance) || undefined),

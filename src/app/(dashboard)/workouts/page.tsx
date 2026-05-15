@@ -3,14 +3,18 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Dumbbell, Plus, X, Scale, BarChart3, History, ListChecks, Activity,
+  Dumbbell, Plus, X, Scale, BarChart3, History, ListChecks, Activity, CalendarClock,
 } from 'lucide-react';
 import {
   useWorkouts, useBiometry,
   DEFAULT_BIOMARKERS, classifyBiomarker,
   BiometryChart, BodySummary, BodyAvatar, BodyTimelineSlider, ProgressPhotos,
   WorkoutHistoryList, NewWorkoutForm, WorkoutStatsPanel,
-  CardioPanel,
+  CardioPanel, RoutinesPanel,
+  materializeStrengthSession,
+} from '@/features/health';
+import type {
+  StrengthRoutine, CardioRoutine, WorkoutDraftSeed, CardioSeed,
 } from '@/features/health';
 import { usePlayerStats, getAvatarEmoji } from '@/features/core-rpg';
 import { RestTimer } from '@/shared/components/RestTimer';
@@ -18,7 +22,7 @@ import { useToast } from '@/shared/components/Toast';
 import styles from './workouts.module.css';
 
 type TopTab = 'workouts' | 'cardio' | 'biometry';
-type WorkoutSubTab = 'list' | 'new' | 'stats';
+type WorkoutSubTab = 'list' | 'new' | 'routines' | 'stats';
 
 export default function WorkoutsPage() {
   const { workouts, addWorkout, deleteWorkout } = useWorkouts();
@@ -42,9 +46,36 @@ export default function WorkoutsPage() {
   // Rest Timer
   const [timerOpen, setTimerOpen] = useState(false);
 
+  // Session started from a routine: seed pre-fills the form; sessionKey forces
+  // a clean remount so the seed is picked up by the lazy state initializer.
+  const [strengthSeed, setStrengthSeed] = useState<WorkoutDraftSeed | undefined>();
+  const [cardioSeed, setCardioSeed] = useState<CardioSeed | undefined>();
+  const [sessionKey, setSessionKey] = useState(0);
+
   const handleSubTab = (next: WorkoutSubTab) => {
     if (next === 'stats') setStatsKey((k) => k + 1);
     setSubTab(next);
+  };
+
+  const handleStartStrength = (routine: StrengthRoutine) => {
+    const { name, exercises, notes } = materializeStrengthSession(routine);
+    setStrengthSeed({ name, exercises });
+    setSessionKey((k) => k + 1);
+    setSubTab('new');
+    if (notes.length > 0) {
+      toast.info(`Coach: ${notes[0]}${notes.length > 1 ? ` (+${notes.length - 1})` : ''}`);
+    }
+  };
+
+  const handleStartCardio = (routine: CardioRoutine) => {
+    setCardioSeed({
+      type: routine.cardioType,
+      durationMinutes: routine.targetMinutes,
+      intensity: routine.intensity,
+    });
+    setSessionKey((k) => k + 1);
+    setTab('cardio');
+    toast.info(`Rotina "${routine.name}" carregada — ajuste e salve.`);
   };
 
   const handleSubmitWorkout = (data: {
@@ -122,6 +153,14 @@ export default function WorkoutsPage() {
             </button>
             <button
               role="tab"
+              aria-selected={subTab === 'routines'}
+              className={`${styles.subTab} ${subTab === 'routines' ? styles.subTabActive : ''}`}
+              onClick={() => handleSubTab('routines')}
+            >
+              <CalendarClock size={14} /> Rotinas
+            </button>
+            <button
+              role="tab"
               aria-selected={subTab === 'stats'}
               className={`${styles.subTab} ${subTab === 'stats' ? styles.subTabActive : ''}`}
               onClick={() => handleSubTab('stats')}
@@ -140,9 +179,18 @@ export default function WorkoutsPage() {
 
           {subTab === 'new' && (
             <NewWorkoutForm
-              onSubmit={handleSubmitWorkout}
-              onCancel={() => handleSubTab('list')}
+              key={sessionKey}
+              seed={strengthSeed}
+              onSubmit={(d) => { handleSubmitWorkout(d); setStrengthSeed(undefined); }}
+              onCancel={() => { setStrengthSeed(undefined); handleSubTab('list'); }}
               onSetCompleted={() => setTimerOpen(true)}
+            />
+          )}
+
+          {subTab === 'routines' && (
+            <RoutinesPanel
+              onStartStrength={handleStartStrength}
+              onStartCardio={handleStartCardio}
             />
           )}
 
@@ -150,7 +198,13 @@ export default function WorkoutsPage() {
         </>
       )}
 
-      {tab === 'cardio' && <CardioPanel />}
+      {tab === 'cardio' && (
+        <CardioPanel
+          key={sessionKey}
+          seed={cardioSeed}
+          onConsumeSeed={() => setCardioSeed(undefined)}
+        />
+      )}
 
       {tab === 'biometry' && !showBio && (
         <div>
