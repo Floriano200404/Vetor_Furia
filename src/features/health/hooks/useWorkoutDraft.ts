@@ -8,7 +8,7 @@
  * responsible for wiring submit and observing `isDirty` if needed.
  */
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Exercise } from '../domain/workout.types';
 
 function genId(): string {
@@ -55,6 +55,13 @@ function calcXP(count: number): number {
 
 export function useWorkoutDraft(): UseWorkoutDraftReturn {
   const [draft, setDraft] = useState<WorkoutDraftState>(EMPTY);
+
+  // Mirror for synchronous reads (e.g. toggleSetCompleted needs to know the
+  // pre-toggle state and return a boolean BEFORE setDraft's updater runs).
+  const draftRef = useRef(draft);
+  useEffect(() => {
+    draftRef.current = draft;
+  });
 
   const setName = useCallback(
     (name: string) => setDraft((d) => ({ ...d, name })),
@@ -144,21 +151,28 @@ export function useWorkoutDraft(): UseWorkoutDraftReturn {
   /**
    * Toggles set completion. Returns `true` if the set was JUST completed
    * (so the caller can trigger side effects like opening the rest timer).
+   *
+   * We read the current state via `draftRef` BEFORE calling setDraft because
+   * setState's updater is async — relying on a side-effect-write inside the
+   * updater to inform the return value is unreliable (React 19 strict mode
+   * may even invoke the updater twice). The ref gives us a synchronous read.
    */
   const toggleSetCompleted = useCallback(
     (exerciseId: string, setIndex: number): boolean => {
-      let becameCompleted = false;
+      const ex = draftRef.current.exercises.find((e) => e.id === exerciseId);
+      const wasCompleted = ex?.sets[setIndex]?.completed ?? false;
+      const becameCompleted = !wasCompleted;
+
       setDraft((d) => ({
         ...d,
         exercises: d.exercises.map((e) => {
           if (e.id !== exerciseId) return e;
           const sets = [...e.sets];
-          const wasCompleted = sets[setIndex].completed;
-          sets[setIndex] = { ...sets[setIndex], completed: !wasCompleted };
-          if (!wasCompleted) becameCompleted = true;
+          sets[setIndex] = { ...sets[setIndex], completed: becameCompleted };
           return { ...e, sets };
         }),
       }));
+
       return becameCompleted;
     },
     [],

@@ -8,12 +8,16 @@
 import { AuthProvider } from '@/shared/providers/AuthProvider';
 import { ToastProvider } from '@/shared/components/Toast';
 import { ConfirmProvider } from '@/shared/components/ConfirmDialog';
+import { FloatingReward } from '@/shared/components/FloatingReward';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
       <ToastProvider>
-        <ConfirmProvider>{children}</ConfirmProvider>
+        <ConfirmProvider>
+          {children}
+          <FloatingReward />
+        </ConfirmProvider>
       </ToastProvider>
     </AuthProvider>
   );

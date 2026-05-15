@@ -12,6 +12,7 @@ import { useAuth } from '@/shared/providers/AuthProvider';
 import { getPlayer, savePlayer, getLedgerEntries } from '@/features/core-rpg/services/xp-ledger.service';
 import type { XPEntry } from '@/features/core-rpg';
 import { BodyAvatar, useBiometry } from '@/features/health';
+import { NotificationSettings } from '@/features/habits';
 import { useToast } from '@/shared/components/Toast';
 import { DataBackupSection } from '@/shared/components/DataBackupSection';
 import styles from './profile.module.css';
@@ -228,6 +229,10 @@ export default function ProfilePage() {
             <button disabled={currentPage >= totalPages - 1} onClick={() => setCurrentPage(currentPage + 1)}>Próximo →</button>
           </div>
         )}
+      </motion.div>
+
+      <motion.div variants={itemVariants}>
+        <NotificationSettings />
       </motion.div>
 
       <motion.div variants={itemVariants}>
