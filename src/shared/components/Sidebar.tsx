@@ -15,6 +15,7 @@ import {
   User,
   Flame,
   Store,
+  Wallet,
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -24,6 +25,7 @@ const navItems = [
   { href: '/workouts', label: 'Treinos', icon: Dumbbell },
   { href: '/studies', label: 'Estudos', icon: BookOpen },
   { href: '/store', label: 'Loja', icon: Store },
+  { href: '/financas', label: 'Finanças', icon: Wallet },
   { href: '/profile', label: 'Perfil', icon: User },
 ];
 
