@@ -70,19 +70,10 @@ export type {
   RoutineExercise,
   WeekDay as RoutineWeekDay,
 } from './domain/workout-routine';
-export { TrainingPlanCard } from './components/TrainingPlanCard';
 export { TodayRoutineCard } from './components/TodayRoutineCard';
 export { RecoveryMap } from './components/RecoveryMap';
 export { ProgressPhotos } from './components/ProgressPhotos';
 export { getRecoveryMap, suggestNextGroup } from './services/recovery.service';
-export {
-  getTrainingPlan,
-  saveTrainingPlan,
-  todaysFocus,
-  PLAN_FOCUSES,
-  focusDef,
-} from './domain/training-plan';
-export type { PlanFocus, WeeklyPlan } from './domain/training-plan';
 export type { CardioSession, CardioType, CardioIntensity } from './domain/cardio.types';
 export { CARDIO_CATALOG, calculateCardioXP, estimateCalories } from './domain/cardio.types';
 export {
