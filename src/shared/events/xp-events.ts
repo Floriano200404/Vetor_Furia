@@ -15,7 +15,7 @@ export const GAME_EVENTS = {
   GOLD_SPENT: 'GOLD_SPENT',
 } as const;
 
-export type XPSource = 'habits' | 'workouts' | 'studies' | 'biometry' | 'bonus';
+export type XPSource = 'habits' | 'workouts' | 'cardio' | 'studies' | 'biometry' | 'bonus';
 
 export interface XPEarnedPayload {
   userId: string;

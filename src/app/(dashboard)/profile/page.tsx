@@ -7,12 +7,14 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Zap, Calendar, TrendingUp, Flame, Dumbbell, BookOpen, CheckSquare, User, Edit3, Save } from 'lucide-react';
-import { usePlayerStats, LevelBadge, getAvatarEmoji } from '@/features/core-rpg';
+import { usePlayerStats, LevelBadge, getAvatarEmoji, AttributeRadar } from '@/features/core-rpg';
 import { useAuth } from '@/shared/providers/AuthProvider';
 import { getPlayer, savePlayer, getLedgerEntries } from '@/features/core-rpg/services/xp-ledger.service';
 import type { XPEntry } from '@/features/core-rpg';
 import { BodyAvatar, useBiometry } from '@/features/health';
 import { NotificationSettings } from '@/features/habits';
+import { HallOfFame } from '@/features/achievements';
+import { ComparisonCard } from '@/features/missions';
 import { useToast } from '@/shared/components/Toast';
 import { DataBackupSection } from '@/shared/components/DataBackupSection';
 import styles from './profile.module.css';
@@ -150,6 +152,21 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
+      </motion.div>
+
+      {/* Attributes Radar */}
+      <motion.div variants={itemVariants}>
+        <AttributeRadar entries={allEntries} />
+      </motion.div>
+
+      {/* You vs Past You */}
+      <motion.div variants={itemVariants}>
+        <ComparisonCard />
+      </motion.div>
+
+      {/* Hall of Fame */}
+      <motion.div variants={itemVariants}>
+        <HallOfFame />
       </motion.div>
 
       {/* XP Distribution */}

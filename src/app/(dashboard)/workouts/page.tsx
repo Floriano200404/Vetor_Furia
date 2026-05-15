@@ -8,7 +8,7 @@ import {
 import {
   useWorkouts, useBiometry,
   DEFAULT_BIOMARKERS, classifyBiomarker,
-  BiometryChart, BodySummary, BodyAvatar, BodyTimelineSlider,
+  BiometryChart, BodySummary, BodyAvatar, BodyTimelineSlider, ProgressPhotos,
   WorkoutHistoryList, NewWorkoutForm, WorkoutStatsPanel,
   CardioPanel,
 } from '@/features/health';
@@ -173,6 +173,7 @@ export default function WorkoutsPage() {
 
           <BodySummary latest={bioRecs[0] || null} allRecords={bioRecs} />
           <BiometryChart records={bioRecs} />
+          <ProgressPhotos />
 
           <motion.button
             className="btn btn-primary"

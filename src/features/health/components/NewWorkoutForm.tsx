@@ -15,18 +15,12 @@ import {
 import { useConfirm } from '@/shared/components/ConfirmDialog';
 import { useToast } from '@/shared/components/Toast';
 import { EXERCISE_CATALOG, MUSCLE_GROUPS } from '../domain/exercise-catalog';
-import { getLastExerciseLoad } from '../services/health.service';
+import { getLastSessionForExercise } from '../services/workout-analytics.service';
+import { getProgressionAdvice, type ProgressionAdvice } from '../domain/progression';
 import { useWorkoutDraft } from '../hooks/useWorkoutDraft';
 import { WorkoutTemplates } from './WorkoutTemplates';
 import type { Exercise, WorkoutTemplate } from '../domain/workout.types';
 import styles from './NewWorkoutForm.module.css';
-
-function daysAgo(timestamp: number): string {
-  const diff = Math.floor((Date.now() - timestamp) / (1000 * 60 * 60 * 24));
-  if (diff === 0) return 'hoje';
-  if (diff === 1) return 'ontem';
-  return `há ${diff} dias`;
-}
 
 interface NewWorkoutFormProps {
   onSubmit: (data: {
@@ -48,12 +42,15 @@ export function NewWorkoutForm({
   const confirm = useConfirm();
   const toast = useToast();
 
-  // Memoize overload lookups so the synchronous localStorage reads don't
-  // run on every keystroke of the form.
-  const overloadByName = useMemo(() => {
-    const data: Record<string, ReturnType<typeof getLastExerciseLoad>> = {};
+  // Progression advice per exercise. Synchronous localStorage reads memoized
+  // so they don't run on every keystroke.
+  const adviceByName = useMemo(() => {
+    const data: Record<string, ProgressionAdvice> = {};
     draft.exercises.forEach((ex) => {
-      if (!data[ex.name]) data[ex.name] = getLastExerciseLoad(ex.name);
+      if (!data[ex.name]) {
+        const last = getLastSessionForExercise(ex.name);
+        data[ex.name] = getProgressionAdvice(ex.name, last);
+      }
     });
     return data;
   }, [draft.exercises]);
@@ -168,7 +165,7 @@ export function NewWorkoutForm({
             Selecionados ({draft.exercises.length})
           </h4>
           {draft.exercises.map((ex) => {
-            const overload = overloadByName[ex.name];
+            const advice = adviceByName[ex.name];
             const isExpanded = draft.expandedExerciseId === ex.id;
             return (
               <div key={ex.id} className={styles.exercise}>
@@ -208,9 +205,9 @@ export function NewWorkoutForm({
                   </div>
                 </div>
 
-                {overload && (
+                {advice && advice.status !== 'first-time' && (
                   <motion.div
-                    className={styles.overload}
+                    className={`${styles.overload} ${styles[`adv_${advice.status}`]}`}
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     transition={{ duration: 0.3 }}
@@ -219,31 +216,32 @@ export function NewWorkoutForm({
                       <TrendingUp size={14} />
                     </div>
                     <div className={styles.overloadContent}>
+                      <div className={styles.advHeadline}>{advice.headline}</div>
                       <div className={styles.overloadLast}>
-                        Último: <strong>{overload.maxWeight}kg × {overload.avgReps} reps</strong>
-                        <span className={styles.overloadMeta}>
-                          {' '}({overload.totalSets} séries · {daysAgo(overload.date)})
-                        </span>
+                        Último: <strong>{advice.lastWeight}kg × {advice.lastTopReps} reps</strong>
                       </div>
-                      <div
-                        className={styles.overloadSuggestion}
-                        onClick={() =>
-                          draft.applyOverloadSuggestion(
-                            ex.id,
-                            overload.suggestedWeight,
-                            overload.avgReps,
-                          )
-                        }
-                        title="Clique para aplicar a todos os sets"
-                      >
-                        💪 Sugere: <strong>{overload.suggestedWeight}kg</strong>
-                        <span className={styles.overloadIncrease}>
-                          {' '}(+
-                          {Math.round((overload.suggestedWeight - overload.maxWeight) * 10) / 10}
-                          kg)
-                        </span>
-                        <span className={styles.overloadHint}>(Clique para aplicar)</span>
-                      </div>
+                      <div className={styles.advDetail}>{advice.detail}</div>
+                      {advice.loadBreakdown && (
+                        <div className={styles.advBreakdown}>📐 {advice.loadBreakdown}</div>
+                      )}
+                      {advice.status === 'progress' && (
+                        <button
+                          type="button"
+                          className={styles.advApply}
+                          onClick={() =>
+                            draft.applyOverloadSuggestion(
+                              ex.id,
+                              advice.suggestedWeight,
+                              advice.suggestedReps,
+                            )
+                          }
+                        >
+                          Aplicar {advice.suggestedWeight}kg × {advice.suggestedReps}
+                          {advice.addedPerSide
+                            ? ` (+${advice.addedPerSide}kg/lado)`
+                            : ` (+${advice.addedTotal}kg)`}
+                        </button>
+                      )}
                     </div>
                   </motion.div>
                 )}

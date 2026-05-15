@@ -138,3 +138,21 @@ export function getWorkout1RM(workout: Workout, exerciseName: string): number {
   }
   return best;
 }
+
+/**
+ * The most recent session (sets + date) where the exercise appears.
+ * Returns null if never logged. Used by the progression coach.
+ */
+export function getLastSessionForExercise(exerciseName: string): {
+  sets: import('../domain/workout.types').ExerciseSet[];
+  date: number;
+} | null {
+  const workouts = readWorkoutsRaw().sort((a, b) => b.date - a.date);
+  for (const w of workouts) {
+    const ex = w.exercises.find((e) => e.name === exerciseName);
+    if (ex && ex.sets.length > 0) {
+      return { sets: ex.sets, date: w.date };
+    }
+  }
+  return null;
+}

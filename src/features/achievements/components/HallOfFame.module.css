@@ -1,0 +1,145 @@
+.wrapper {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+
+.header {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.headerIcon {
+  color: var(--accent-warning);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 2px 0;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-md);
+}
+
+.card {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
+}
+
+.cardUnlocked {
+  background: var(--bg-secondary);
+}
+
+.cardLocked {
+  opacity: 0.65;
+}
+
+.cardIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--bg-primary);
+}
+
+.emoji {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.lockIcon {
+  color: var(--text-muted);
+}
+
+.cardBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: 2px;
+}
+
+.cardTitle {
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.tierBadge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.cardDesc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-sm) 0;
+  line-height: 1.35;
+}
+
+.progressWrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.progressBar {
+  flex: 1;
+  height: 5px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: var(--radius-full);
+}
+
+.progressLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.rewardLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+}
