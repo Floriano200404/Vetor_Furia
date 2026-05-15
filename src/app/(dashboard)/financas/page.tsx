@@ -7,7 +7,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { LayoutGrid, Repeat } from 'lucide-react';
+import { LayoutGrid, Repeat, Target } from 'lucide-react';
 import {
   useFinance,
   FinanceOverview,
@@ -15,16 +15,17 @@ import {
   TransactionList,
   CategoryDonut,
   RecurringManager,
+  BudgetManager,
 } from '@/features/finance';
 import styles from './financas.module.css';
 
-type Tab = 'overview' | 'recurring';
+type Tab = 'overview' | 'budget' | 'recurring';
 
 export default function FinancasPage() {
   const {
-    transactions, rules, month,
+    transactions, rules, budgets, budgetStatuses, month,
     summary, prevSummary, byCategory, totalBalance,
-    addTx, removeTx, addRule, removeRule, toggleRule,
+    addTx, removeTx, addRule, removeRule, toggleRule, updateBudget,
   } = useFinance();
 
   const [tab, setTab] = useState<Tab>('overview');
@@ -47,6 +48,12 @@ export default function FinancasPage() {
             onClick={() => setTab('overview')}
           >
             <LayoutGrid size={16} /> Visão geral
+          </button>
+          <button
+            className={`${styles.tab} ${tab === 'budget' ? styles.tabActive : ''}`}
+            onClick={() => setTab('budget')}
+          >
+            <Target size={16} /> Orçamento
           </button>
           <button
             className={`${styles.tab} ${tab === 'recurring' ? styles.tabActive : ''}`}
@@ -78,6 +85,14 @@ export default function FinancasPage() {
             />
           </div>
         </div>
+      )}
+
+      {tab === 'budget' && (
+        <BudgetManager
+          budgets={budgets}
+          statuses={budgetStatuses}
+          onSetBudget={updateBudget}
+        />
       )}
 
       {tab === 'recurring' && (

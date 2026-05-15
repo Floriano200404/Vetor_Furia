@@ -4,7 +4,8 @@ export { TransactionForm } from './components/TransactionForm';
 export { TransactionList } from './components/TransactionList';
 export { CategoryDonut } from './components/CategoryDonut';
 export { RecurringManager } from './components/RecurringManager';
-export { formatBRL, monthKey } from './domain/finance.types';
+export { BudgetManager } from './components/BudgetManager';
+export { formatBRL, monthKey, budgetStateOf } from './domain/finance.types';
 export type {
   Transaction,
   RecurringRule,
@@ -12,5 +13,8 @@ export type {
   TxKind,
   MonthSummary,
   CategorySlice,
+  Budget,
+  BudgetStatus,
+  BudgetState,
 } from './domain/finance.types';
 export { DEFAULT_CATEGORIES, getCategory, categoriesFor } from './domain/categories';

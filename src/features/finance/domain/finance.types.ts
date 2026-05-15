@@ -66,3 +66,32 @@ export interface CategorySlice {
   icon: string;
   total: number;
 }
+
+/** Monthly spending limit for an expense category. */
+export interface Budget {
+  categoryId: string;
+  monthlyLimit: number;
+}
+
+export type BudgetState = 'ok' | 'alerta' | 'estourou';
+
+export interface BudgetStatus {
+  categoryId: string;
+  label: string;
+  icon: string;
+  color: string;
+  limit: number;
+  spent: number;
+  /** spent / limit; can exceed 1 when over budget. */
+  ratio: number;
+  state: BudgetState;
+}
+
+/** ok < 80% <= alerta <= 100% < estourou */
+export function budgetStateOf(spent: number, limit: number): BudgetState {
+  if (limit <= 0) return 'ok';
+  const r = spent / limit;
+  if (r > 1) return 'estourou';
+  if (r >= 0.8) return 'alerta';
+  return 'ok';
+}
