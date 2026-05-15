@@ -16,6 +16,7 @@ import {
   CategoryDonut,
   RecurringManager,
   BudgetManager,
+  MonthNavigator,
 } from '@/features/finance';
 import styles from './financas.module.css';
 
@@ -24,23 +25,27 @@ type Tab = 'overview' | 'budget' | 'recurring';
 export default function FinancasPage() {
   const {
     transactions, rules, budgets, budgetStatuses, month,
+    atCurrentMonth, goPrevMonth, goNextMonth, goCurrentMonth,
     summary, prevSummary, byCategory, totalBalance,
     addTx, removeTx, addRule, removeRule, toggleRule, updateBudget,
   } = useFinance();
 
   const [tab, setTab] = useState<Tab>('overview');
 
-  const monthLabel = new Date(month + '-02T12:00:00').toLocaleDateString('pt-BR', {
-    month: 'long',
-    year: 'numeric',
-  });
-
   return (
     <motion.div className={styles.page} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>Finanças</h1>
-          <p className={styles.subtitle}>{monthLabel}</p>
+          <div className={styles.monthNav}>
+            <MonthNavigator
+              month={month}
+              atCurrentMonth={atCurrentMonth}
+              onPrev={goPrevMonth}
+              onNext={goNextMonth}
+              onCurrent={goCurrentMonth}
+            />
+          </div>
         </div>
         <div className={styles.tabs}>
           <button

@@ -5,7 +5,8 @@ export { TransactionList } from './components/TransactionList';
 export { CategoryDonut } from './components/CategoryDonut';
 export { RecurringManager } from './components/RecurringManager';
 export { BudgetManager } from './components/BudgetManager';
-export { formatBRL, monthKey, budgetStateOf } from './domain/finance.types';
+export { MonthNavigator } from './components/MonthNavigator';
+export { formatBRL, monthKey, monthLabel, shiftMonth, budgetStateOf } from './domain/finance.types';
 export type {
   Transaction,
   RecurringRule,

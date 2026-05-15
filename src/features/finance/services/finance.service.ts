@@ -208,12 +208,6 @@ export function getExpenseByCategory(month = monthKey()): CategorySlice[] {
   return slices.sort((a, b) => b.total - a.total);
 }
 
-/** Previous-month comparison delta for the net balance. */
-export function getPreviousMonthSummary(now = new Date()): MonthSummary {
-  const prev = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  return getMonthSummary(monthKey(prev));
-}
-
 // --- Budgets ---
 
 export function getBudgets(): Budget[] {

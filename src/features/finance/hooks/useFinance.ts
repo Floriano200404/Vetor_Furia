@@ -15,7 +15,7 @@ import type {
   Budget,
   BudgetStatus,
 } from '../domain/finance.types';
-import { monthKey, formatBRL } from '../domain/finance.types';
+import { monthKey, formatBRL, shiftMonth, isCurrentMonth } from '../domain/finance.types';
 import {
   getTransactions,
   addTransaction,
@@ -26,7 +26,6 @@ import {
   toggleRecurringRule,
   materializeRecurring,
   getMonthSummary,
-  getPreviousMonthSummary,
   getExpenseByCategory,
   getTotalBalance,
   getBudgets,
@@ -42,7 +41,23 @@ export function useFinance() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [rules, setRules] = useState<RecurringRule[]>([]);
   const [budgets, setBudgets] = useState<Budget[]>([]);
-  const [month] = useState<string>(() => monthKey());
+  // Selected month ("YYYY-MM"). Navigable; defaults to the current month.
+  const [month, setMonth] = useState<string>(() => monthKey());
+
+  const goPrevMonth = useCallback(() => {
+    setMonth((m) => shiftMonth(m, -1));
+  }, []);
+
+  const goNextMonth = useCallback(() => {
+    // Never navigate past the current month (future is empty / not materialized).
+    setMonth((m) => (isCurrentMonth(m) ? m : shiftMonth(m, 1)));
+  }, []);
+
+  const goCurrentMonth = useCallback(() => {
+    setMonth(monthKey());
+  }, []);
+
+  const atCurrentMonth = isCurrentMonth(month);
 
   const refresh = useCallback(() => {
     setTransactions(getTransactions());
@@ -102,7 +117,8 @@ export function useFinance() {
   }, [refresh]);
 
   const summary: MonthSummary = getMonthSummary(month);
-  const prevSummary: MonthSummary = getPreviousMonthSummary();
+  // Delta is always vs the month BEFORE the selected one.
+  const prevSummary: MonthSummary = getMonthSummary(shiftMonth(month, -1));
   const byCategory: CategorySlice[] = getExpenseByCategory(month);
   const totalBalance = getTotalBalance();
   const budgetStatuses: BudgetStatus[] = getBudgetStatuses(month);
@@ -113,6 +129,10 @@ export function useFinance() {
     budgets,
     budgetStatuses,
     month,
+    atCurrentMonth,
+    goPrevMonth,
+    goNextMonth,
+    goCurrentMonth,
     summary,
     prevSummary,
     byCategory,
