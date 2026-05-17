@@ -16,8 +16,33 @@ export interface Transaction {
   recurringId?: string;
   /** Competence month "YYYY-MM" — used to dedupe recurring materialization. */
   competence?: string;
+  /** Bank/source name when this tx came from an imported statement. */
+  source?: string;
+  /** Stable hash (date+amount+desc) for import dedupe. */
+  importHash?: string;
   createdAt: number;
 }
+
+/**
+ * A transaction line parsed from a statement, before the user confirms it
+ * in the review screen. `dup` flags rows already present (skipped by default).
+ */
+export interface ParsedTx {
+  /** Local row id for the review UI. */
+  rowId: string;
+  kind: TxKind;
+  amount: number;
+  date: number;
+  description: string;
+  /** Auto-guessed category id (editable in review). */
+  categoryId: string;
+  importHash: string;
+  dup: boolean;
+  /** Whether the user wants to import this row. */
+  include: boolean;
+}
+
+export type StatementFormat = 'ofx' | 'csv' | 'pdf';
 
 export interface RecurringRule {
   id: string;

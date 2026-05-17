@@ -6,6 +6,7 @@ export { CategoryDonut } from './components/CategoryDonut';
 export { RecurringManager } from './components/RecurringManager';
 export { BudgetManager } from './components/BudgetManager';
 export { MonthNavigator } from './components/MonthNavigator';
+export { ImportStatement } from './components/ImportStatement';
 export { formatBRL, monthKey, monthLabel, shiftMonth, budgetStateOf } from './domain/finance.types';
 export type {
   Transaction,
