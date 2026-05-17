@@ -7,7 +7,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { LayoutGrid, Repeat, Target } from 'lucide-react';
+import { LayoutGrid, Repeat, Target, FileUp } from 'lucide-react';
 import {
   useFinance,
   FinanceOverview,
@@ -17,7 +17,9 @@ import {
   RecurringManager,
   BudgetManager,
   MonthNavigator,
+  ImportStatement,
 } from '@/features/finance';
+import { getImportHashes } from '@/features/finance/services/finance.service';
 import styles from './financas.module.css';
 
 type Tab = 'overview' | 'budget' | 'recurring';
@@ -27,8 +29,10 @@ export default function FinancasPage() {
     transactions, rules, budgets, budgetStatuses, month,
     atCurrentMonth, goPrevMonth, goNextMonth, goCurrentMonth,
     summary, prevSummary, byCategory, totalBalance,
-    addTx, removeTx, addRule, removeRule, toggleRule, updateBudget,
+    addTx, removeTx, addRule, removeRule, toggleRule, updateBudget, importRows,
   } = useFinance();
+
+  const [showImport, setShowImport] = useState(false);
 
   const [tab, setTab] = useState<Tab>('overview');
 
@@ -77,7 +81,16 @@ export default function FinancasPage() {
             totalBalance={totalBalance}
           />
 
-          <TransactionForm onAdd={addTx} />
+          <div className={styles.actionsRow}>
+            <TransactionForm onAdd={addTx} />
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setShowImport(true)}
+            >
+              <FileUp size={16} /> Importar extrato
+            </button>
+          </div>
 
           <CategoryDonut slices={byCategory} />
 
@@ -106,6 +119,14 @@ export default function FinancasPage() {
           onAdd={addRule}
           onRemove={removeRule}
           onToggle={toggleRule}
+        />
+      )}
+
+      {showImport && (
+        <ImportStatement
+          existingHashes={getImportHashes()}
+          onImport={importRows}
+          onClose={() => setShowImport(false)}
         />
       )}
     </motion.div>

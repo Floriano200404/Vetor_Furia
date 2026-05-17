@@ -30,6 +30,13 @@
   margin-top: var(--space-sm);
 }
 
+.actionsRow {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
 .tabs {
   display: flex;
   gap: var(--space-xs);

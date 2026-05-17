@@ -32,8 +32,11 @@ import {
   setBudget,
   getBudgetStatuses,
   getBudgetStatusForCategory,
+  getImportHashes,
+  addImportedTransactions,
   type AddTxInput,
   type AddRuleInput,
+  type ImportedRow,
 } from '../services/finance.service';
 
 export function useFinance() {
@@ -116,6 +119,12 @@ export function useFinance() {
     refresh();
   }, [refresh]);
 
+  const importRows = useCallback((rows: ImportedRow[], source: string) => {
+    const n = addImportedTransactions(rows, source);
+    refresh();
+    return n;
+  }, [refresh]);
+
   const summary: MonthSummary = getMonthSummary(month);
   // Delta is always vs the month BEFORE the selected one.
   const prevSummary: MonthSummary = getMonthSummary(shiftMonth(month, -1));
@@ -143,6 +152,8 @@ export function useFinance() {
     removeRule,
     toggleRule,
     updateBudget,
+    importRows,
+    getImportHashes,
     refresh,
   };
 }

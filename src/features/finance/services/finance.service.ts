@@ -67,6 +67,52 @@ export function addTransaction(input: AddTxInput): Transaction {
   return tx;
 }
 
+/** Hashes of transactions already stored — used to skip import duplicates. */
+export function getImportHashes(): Set<string> {
+  const set = new Set<string>();
+  for (const t of read<Transaction>(TX_KEY)) {
+    if (t.importHash) set.add(t.importHash);
+  }
+  return set;
+}
+
+export interface ImportedRow {
+  kind: TxKind;
+  amount: number;
+  categoryId: string;
+  description: string;
+  date: number;
+  importHash: string;
+}
+
+/**
+ * Batch-insert imported rows tagged with a source (bank) name. Returns the
+ * count actually written.
+ */
+export function addImportedTransactions(
+  rows: ImportedRow[],
+  source: string,
+): number {
+  if (rows.length === 0) return 0;
+  const all = read<Transaction>(TX_KEY);
+  const now = Date.now();
+  for (const r of rows) {
+    all.push({
+      id: genId(),
+      kind: r.kind,
+      amount: Math.abs(r.amount),
+      categoryId: r.categoryId,
+      description: r.description.trim(),
+      date: r.date,
+      source: source.trim() || 'Importado',
+      importHash: r.importHash,
+      createdAt: now,
+    });
+  }
+  write(TX_KEY, all);
+  return rows.length;
+}
+
 export function deleteTransaction(id: string): void {
   write(TX_KEY, read<Transaction>(TX_KEY).filter((t) => t.id !== id));
 }
