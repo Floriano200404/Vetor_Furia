@@ -145,6 +145,13 @@
   border-radius: var(--radius-sm);
 }
 
+.hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 0;
+}
+
 .toggleBtn {
   background: none;
   border: none;
