@@ -31,6 +31,7 @@ interface AuthContextType {
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   error: string | null;
+  clearError: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -101,6 +102,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await signOut(auth);
   };
 
+  const clearError = () => setError(null);
+
   const userId = user?.uid || DEFAULT_USER_ID;
   const displayName = user?.displayName || user?.email?.split('@')[0] || 'Guerreiro';
   const isAuthenticated = isFirebaseMode ? user !== null : true;
@@ -119,6 +122,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loginWithGoogle,
         logout,
         error,
+        clearError,
       }}
     >
       {children}
