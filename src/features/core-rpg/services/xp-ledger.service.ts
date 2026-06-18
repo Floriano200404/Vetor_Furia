@@ -92,7 +92,15 @@ export function savePlayer(player: Player): void {
 export function getLedgerEntries(): XPEntry[] {
   if (typeof window === 'undefined') return [];
   const stored = localStorage.getItem(STORAGE_KEYS.LEDGER);
-  return stored ? JSON.parse(stored) : [];
+  const entries: XPEntry[] = stored ? JSON.parse(stored) : [];
+  // Remove duplicatas por id — protege a UI de "chaves repetidas" no React
+  // caso o histórico tenha entradas duplicadas (resquício do antigo bug de XP em dobro).
+  const seen = new Set<string>();
+  return entries.filter((entry) => {
+    if (seen.has(entry.id)) return false;
+    seen.add(entry.id);
+    return true;
+  });
 }
 
 function saveLedgerEntries(entries: XPEntry[]): void {

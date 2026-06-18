@@ -67,7 +67,7 @@ export function BossBattleCard() {
 
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setState(getBossState());
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+     
     setProgress(prog);
   }, [boss, toast]);
 

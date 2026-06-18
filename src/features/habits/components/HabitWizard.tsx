@@ -71,9 +71,9 @@ export function HabitWizard({ isOpen, onClose, onCreate }: HabitWizardProps) {
     if (isOpen) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setStep('template');
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+       
       setDraft(emptyDraft);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+       
       setNewTime('08:00');
     }
   }, [isOpen]);
