@@ -1,0 +1,146 @@
+/* Quest Diária — card no estilo do Sistema (Solo Leveling). */
+
+.card {
+  --sys: #38bdf8;
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--sys) 45%, transparent);
+  border-radius: 14px;
+  padding: 1.1rem 1.2rem;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--sys) 9%, transparent), rgba(8, 15, 30, 0.6));
+  box-shadow: 0 0 22px color-mix(in srgb, var(--sys) 22%, transparent);
+}
+
+.done { --sys: #f59e0b; }   /* concluída → dourado */
+.urgent { --sys: #ef4444; } /* pouco tempo → vermelho */
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.9rem;
+}
+
+.headIcon { color: var(--sys); flex-shrink: 0; }
+
+.headLabel {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--sys);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--sys) 60%, transparent);
+}
+
+.countdown {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--sys) 85%, #fff);
+}
+
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.9rem;
+}
+
+.progressLabel {
+  font-size: 0.8rem;
+  color: #c5ddf2;
+  white-space: nowrap;
+}
+
+.bar {
+  flex: 1;
+  height: 7px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--sys), color-mix(in srgb, var(--sys) 60%, #fff));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--sys) 70%, transparent);
+}
+
+.list {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.9rem;
+  color: #d8e6f5;
+}
+
+.itemDone { color: #8aa0b5; }
+.itemDone .itemTitle { text-decoration: line-through; }
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1px solid color-mix(in srgb, var(--sys) 50%, transparent);
+  color: var(--sys);
+  flex-shrink: 0;
+}
+
+.itemDone .check {
+  background: var(--sys);
+  color: #04111f;
+  border-color: var(--sys);
+}
+
+.itemIcon { font-size: 1rem; line-height: 1; }
+.itemTitle { flex: 1; }
+
+.cta {
+  display: inline-block;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--sys) 90%, #fff);
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--sys) 45%, transparent);
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.cta:hover {
+  background: color-mix(in srgb, var(--sys) 16%, transparent);
+  border-color: var(--sys);
+}
+
+.doneText {
+  margin: 0;
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--sys) 85%, #fff);
+}
+
+.empty .emptyText {
+  margin: 0 0 0.9rem;
+  font-size: 0.9rem;
+  color: #9fb3c8;
+}

@@ -6,6 +6,10 @@ export { HPBar } from './components/HPBar';
 export { GoldDisplay } from './components/GoldDisplay';
 export { ActivityHeatmap } from './components/ActivityHeatmap';
 export { AttributeRadar } from './components/AttributeRadar';
+export { AbilityPoints } from './components/AbilityPoints';
+export { HunterRankBadge } from './components/HunterRankBadge';
+export { getHunterRank, getNextRank } from './domain/hunter-rank';
+export type { HunterRank } from './domain/hunter-rank';
 export {
   ATTRIBUTES,
   attributeForSource,

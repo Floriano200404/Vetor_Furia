@@ -2,6 +2,8 @@
  * Core RPG Domain Types — Player, Level, Avatar
  */
 
+import type { AttributeKey } from './attributes';
+
 export interface Player {
   id: string;
   uid: string;
@@ -13,6 +15,10 @@ export interface Player {
   hp: number;
   maxHp: number;
   gold: number;
+  /** Pontos de habilidade não gastos (ganhos ao subir de nível). */
+  abilityPoints: number;
+  /** Pontos alocados por atributo (bônus sobre o nível derivado). */
+  attributeBonus: Record<AttributeKey, number>;
   createdAt: number;
   updatedAt: number;
 }

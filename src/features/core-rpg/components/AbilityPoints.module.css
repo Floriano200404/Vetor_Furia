@@ -1,0 +1,107 @@
+/* Alocação de pontos de habilidade — estilo do Sistema. */
+
+.card {
+  --sys: #38bdf8;
+  border: 1px solid color-mix(in srgb, var(--sys) 40%, transparent);
+  border-radius: 14px;
+  padding: 1.1rem 1.2rem;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--sys) 8%, transparent), rgba(8, 15, 30, 0.5));
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.label {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--sys);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--sys) 55%, transparent);
+}
+
+.points {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: #8aa0b5;
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pointsAvail {
+  color: #04111f;
+  background: var(--sys);
+  border-color: var(--sys);
+  font-weight: 700;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--sys) 60%, transparent);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 8px color-mix(in srgb, var(--sys) 40%, transparent); }
+  50% { box-shadow: 0 0 18px color-mix(in srgb, var(--sys) 80%, transparent); }
+}
+
+.hint {
+  margin: 0 0 0.85rem;
+  font-size: 0.82rem;
+  color: color-mix(in srgb, var(--sys) 85%, #fff);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.5rem 0.55rem;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.icon { font-size: 1.05rem; line-height: 1; }
+.name { flex: 1; font-size: 0.9rem; color: #d8e6f5; }
+
+.value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.bonus { color: #38bdf8; font-weight: 600; font-size: 0.82rem; }
+
+.plus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--sys) 45%, transparent);
+  background: transparent;
+  color: var(--sys);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.plus:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--sys) 18%, transparent);
+  transform: scale(1.08);
+}
+
+.plus:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}

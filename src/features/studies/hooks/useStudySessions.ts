@@ -27,7 +27,7 @@ export function useStudySessions() {
     return session;
   }, [refresh]);
 
-  const handleDelete = useCallback((id: string) => { deleteSession(id); // eslint-disable-next-line react-hooks/set-state-in-effect
+  const handleDelete = useCallback((id: string) => { deleteSession(id);  
     refresh(); }, [refresh]);
 
   return { sessions, addSession: handleAdd, deleteSession: handleDelete, refresh };

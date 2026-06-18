@@ -1,0 +1,117 @@
+/* Configuração de notificações WhatsApp (CallMeBot). */
+
+.card {
+  border: 1px solid rgba(37, 211, 102, 0.35); /* verde WhatsApp */
+  border-radius: 14px;
+  padding: 1.1rem 1.2rem;
+  background: linear-gradient(180deg, rgba(37, 211, 102, 0.07), rgba(8, 15, 30, 0.4));
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.85rem;
+}
+
+.headIcon { color: #25d366; }
+
+.title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.steps {
+  margin: 0 0 1rem;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #b9c9d8;
+}
+
+.steps strong { color: #e6f3ff; }
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+.field span {
+  font-size: 0.78rem;
+  color: #9fb3c8;
+}
+
+.field input {
+  padding: 0.6rem 0.7rem;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: #25d366;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.4rem 0 1rem;
+  font-size: 0.86rem;
+  color: #d8e6f5;
+  cursor: pointer;
+}
+
+.toggle input { width: 16px; height: 16px; accent-color: #25d366; }
+
+.actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.save,
+.test {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.55rem 1rem;
+  border-radius: 9px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.save {
+  background: #25d366;
+  color: #04210f;
+  border: none;
+}
+
+.save:hover { filter: brightness(1.08); }
+
+.test {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #d8e6f5;
+}
+
+.test:hover:not(:disabled) { border-color: #25d366; color: #25d366; }
+.test:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.note {
+  margin: 0.9rem 0 0;
+  font-size: 0.76rem;
+  line-height: 1.4;
+  color: #7e93a8;
+}

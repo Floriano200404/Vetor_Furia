@@ -146,3 +146,11 @@ export function buildBreakdown(
     };
   });
 }
+
+/** Pontos de habilidade ganhos a cada nível (fiel ao Solo Leveling). */
+export const ABILITY_POINTS_PER_LEVEL = 3;
+
+/** Cria um mapa de bônus zerado para todos os atributos. */
+export function emptyAttributeBonus(): Record<AttributeKey, number> {
+  return { forca: 0, constituicao: 0, inteligencia: 0, disciplina: 0, vitalidade: 0 };
+}

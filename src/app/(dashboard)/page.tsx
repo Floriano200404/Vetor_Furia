@@ -10,7 +10,7 @@ import { Flame, TrendingUp, Zap, Target, Calendar, BookOpen, Dumbbell, CheckSqua
 import { usePlayerStats, XPBar, AvatarDisplay, LevelBadge, ActivityHeatmap } from '@/features/core-rpg';
 import { getLedgerEntries } from '@/features/core-rpg/services/xp-ledger.service';
 import type { XPEntry } from '@/features/core-rpg';
-import { TodayMissions, MentorCard, WeeklySummaryModal, QuickLogFAB, BossBattleCard } from '@/features/missions';
+import { TodayMissions, MentorCard, WeeklySummaryModal, QuickLogFAB, BossBattleCard, QuestDiaria } from '@/features/missions';
 import { TodayRoutineCard } from '@/features/health';
 import styles from './page.module.css';
 
@@ -134,6 +134,11 @@ export default function DashboardPage() {
 
       <WeeklySummaryModal />
       <QuickLogFAB />
+
+      {/* Quest Diária — a missão diária do Sistema (Solo Leveling) */}
+      <motion.section variants={itemVariants}>
+        <QuestDiaria />
+      </motion.section>
 
       {/* Boss Battle of the day */}
       <motion.section variants={itemVariants}>

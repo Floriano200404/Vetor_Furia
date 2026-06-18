@@ -5,7 +5,8 @@
  * Shown when Firebase is configured and the user is not authenticated.
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Flame, Mail, Lock, LogIn, Loader2 } from 'lucide-react';
 import { useAuth } from '@/shared/providers/AuthProvider';
@@ -16,9 +17,20 @@ export default function LoginPage() {
     loginWithEmail,
     registerWithEmail,
     loginWithGoogle,
+    isAuthenticated,
     error,
     clearError,
   } = useAuth();
+
+  const router = useRouter();
+
+  // Depois que o login/cadastro dá certo, o usuário fica autenticado —
+  // aí redirecionamos pra dentro do app (dashboard em "/").
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace('/');
+    }
+  }, [isAuthenticated, router]);
 
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState('');

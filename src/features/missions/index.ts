@@ -5,3 +5,4 @@ export { WeeklySummaryModal } from './components/WeeklySummaryModal';
 export { ComparisonCard } from './components/ComparisonCard';
 export { QuickLogFAB } from './components/QuickLogFAB';
 export { BossBattleCard } from './components/BossBattleCard';
+export { QuestDiaria } from './components/QuestDiaria';

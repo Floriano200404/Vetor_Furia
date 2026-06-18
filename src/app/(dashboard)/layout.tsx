@@ -13,6 +13,7 @@ import { LevelUpModal, usePlayerStats } from '@/features/core-rpg';
 import { runDailyCheck } from '@/features/core-rpg/services/daily-check.service';
 import { useAuth } from '@/shared/providers/AuthProvider';
 import { useToast } from '@/shared/components/Toast';
+import { useSystem, sendWhatsApp } from '@/features/system';
 import styles from './dashboard.module.css';
 
 export default function DashboardLayout({
@@ -24,7 +25,9 @@ export default function DashboardLayout({
   const { stats, isLevelingUp, dismissLevelUp, newLevel } = usePlayerStats();
   const router = useRouter();
   const toast = useToast();
+  const system = useSystem();
   const dailyCheckRan = useRef(false);
+  const welcomedRef = useRef(false);
 
   // Auth guard: redirect to login when Firebase is active but user is not authenticated
   useEffect(() => {
@@ -45,13 +48,28 @@ export default function DashboardLayout({
 
       switch (result.type) {
         case 'death':
-          toast.error(result.message);
+          system.notify({
+            title: 'ZONA DE PENALIDADE',
+            lines: [result.message],
+            variant: 'penalty',
+            autoCloseMs: 0, // morte fica aberta — exige reconhecimento
+          });
+          sendWhatsApp(`💀 ${result.message}`);
           break;
         case 'damage':
-          toast.warning(result.message);
+          system.notify({
+            title: 'PENALIDADE',
+            lines: [result.message],
+            variant: 'penalty',
+          });
+          sendWhatsApp(`⚠️ ${result.message}`);
           break;
         case 'heal':
-          toast.success(result.message);
+          system.notify({
+            title: 'RECUPERAÇÃO',
+            lines: [result.message],
+            variant: 'reward',
+          });
           break;
         case 'none':
           toast.info(result.message);
@@ -60,7 +78,29 @@ export default function DashboardLayout({
     }, 1500);
 
     return () => clearTimeout(timer);
-  }, [isLoading, toast]);
+  }, [isLoading, toast, system]);
+
+  // Janela do Sistema de boas-vindas — uma vez por sessão
+  useEffect(() => {
+    if (welcomedRef.current || isLoading) return;
+    if (isFirebaseMode && !isAuthenticated) return;
+    if (typeof window !== 'undefined' && sessionStorage.getItem('vetor_furia_welcomed')) return;
+    welcomedRef.current = true;
+    if (typeof window !== 'undefined') sessionStorage.setItem('vetor_furia_welcomed', '1');
+
+    const name = isFirebaseMode ? displayName : stats.displayName;
+    const timer = setTimeout(() => {
+      system.notify({
+        title: `Bem-vindo de volta, ${name}`,
+        lines: [
+          `Nível ${stats.level} · ${stats.avatarStage}`,
+          'Suas missões de hoje aguardam, Caçador.',
+        ],
+        variant: 'quest',
+      });
+    }, 900);
+    return () => clearTimeout(timer);
+  }, [isLoading, isAuthenticated, isFirebaseMode, displayName, stats.level, stats.avatarStage, stats.displayName, system]);
 
   // Show nothing while checking auth
   if (isLoading) {
