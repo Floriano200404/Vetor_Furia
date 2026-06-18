@@ -6,6 +6,7 @@
 import type { XPEntry } from '../domain/xp-ledger.types';
 import type { Player } from '../domain/player.types';
 import { calculateLevel, getAvatarStage } from './level-calculator';
+import { ABILITY_POINTS_PER_LEVEL, emptyAttributeBonus, type AttributeKey } from '../domain/attributes';
 import { DEFAULT_USER_ID } from '@/lib/constants';
 import { createAdapter, type IStorageAdapter } from '@/lib/storage';
 
@@ -48,6 +49,8 @@ function createDefaultPlayer(uid?: string): Player {
     hp: 100,
     maxHp: 100,
     gold: 0,
+    abilityPoints: 0,
+    attributeBonus: emptyAttributeBonus(),
     createdAt: Date.now(),
     updatedAt: Date.now(),
   };
@@ -72,6 +75,8 @@ export function getPlayer(userId?: string): Player {
     if (player.hp === undefined) player.hp = 100;
     if (player.maxHp === undefined) player.maxHp = 100;
     if (player.gold === undefined) player.gold = 0;
+    if (player.abilityPoints === undefined) player.abilityPoints = 0;
+    if (!player.attributeBonus) player.attributeBonus = emptyAttributeBonus();
     return player;
   }
   const player = createDefaultPlayer(userId);
@@ -135,6 +140,10 @@ export function addXPEntry(entry: Omit<XPEntry, 'id' | 'createdAt'>): {
   player.totalXP += entry.amount;
   player.level = calculateLevel(player.totalXP);
   player.avatarStage = getAvatarStage(player.level).stage;
+  // Concede pontos de habilidade ao subir de nível (fiel ao Solo Leveling).
+  if (player.level > previousLevel) {
+    player.abilityPoints += (player.level - previousLevel) * ABILITY_POINTS_PER_LEVEL;
+  }
   player.updatedAt = Date.now();
   savePlayer(player);
 
@@ -148,6 +157,22 @@ export function addXPEntry(entry: Omit<XPEntry, 'id' | 'createdAt'>): {
 
 export function getRecentEntries(limit: number = 10): XPEntry[] {
   return getLedgerEntries().slice(0, limit);
+}
+
+/**
+ * Gasta 1 ponto de habilidade no atributo informado (bônus permanente).
+ * Não faz nada se não houver pontos. Retorna o jogador atualizado.
+ */
+export function spendAbilityPoint(key: AttributeKey): Player {
+  const player = getPlayer();
+  if ((player.abilityPoints ?? 0) > 0) {
+    if (!player.attributeBonus) player.attributeBonus = emptyAttributeBonus();
+    player.abilityPoints -= 1;
+    player.attributeBonus[key] = (player.attributeBonus[key] ?? 0) + 1;
+    player.updatedAt = Date.now();
+    savePlayer(player);
+  }
+  return player;
 }
 
 /**

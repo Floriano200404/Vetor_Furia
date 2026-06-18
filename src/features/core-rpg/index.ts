@@ -6,6 +6,7 @@ export { HPBar } from './components/HPBar';
 export { GoldDisplay } from './components/GoldDisplay';
 export { ActivityHeatmap } from './components/ActivityHeatmap';
 export { AttributeRadar } from './components/AttributeRadar';
+export { AbilityPoints } from './components/AbilityPoints';
 export {
   ATTRIBUTES,
   attributeForSource,

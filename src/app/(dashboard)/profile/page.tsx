@@ -7,7 +7,7 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Zap, Calendar, TrendingUp, Flame, Dumbbell, BookOpen, CheckSquare, User, Edit3, Save } from 'lucide-react';
-import { usePlayerStats, LevelBadge, getAvatarEmoji, AttributeRadar } from '@/features/core-rpg';
+import { usePlayerStats, LevelBadge, getAvatarEmoji, AttributeRadar, AbilityPoints } from '@/features/core-rpg';
 import { useAuth } from '@/shared/providers/AuthProvider';
 import { getPlayer, savePlayer, getLedgerEntries } from '@/features/core-rpg/services/xp-ledger.service';
 import type { XPEntry } from '@/features/core-rpg';
@@ -157,6 +157,11 @@ export default function ProfilePage() {
       {/* Attributes Radar */}
       <motion.div variants={itemVariants}>
         <AttributeRadar entries={allEntries} />
+      </motion.div>
+
+      {/* Pontos de habilidade alocáveis (Solo Leveling) */}
+      <motion.div variants={itemVariants}>
+        <AbilityPoints />
       </motion.div>
 
       {/* You vs Past You */}
