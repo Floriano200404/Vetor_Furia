@@ -7,7 +7,7 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Zap, Calendar, TrendingUp, Flame, Dumbbell, BookOpen, CheckSquare, User, Edit3, Save } from 'lucide-react';
-import { usePlayerStats, LevelBadge, getAvatarEmoji, AttributeRadar, AbilityPoints } from '@/features/core-rpg';
+import { usePlayerStats, LevelBadge, getAvatarEmoji, AttributeRadar, AbilityPoints, HunterRankBadge } from '@/features/core-rpg';
 import { useAuth } from '@/shared/providers/AuthProvider';
 import { getPlayer, savePlayer, getLedgerEntries } from '@/features/core-rpg/services/xp-ledger.service';
 import type { XPEntry } from '@/features/core-rpg';
@@ -109,6 +109,7 @@ export default function ProfilePage() {
             showLabel
           />
           <LevelBadge level={stats.level} size="lg" />
+          <HunterRankBadge level={stats.level} />
         </div>
         <div className={styles.heroInfo}>
           <div className={styles.nameRow}>

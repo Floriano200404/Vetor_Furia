@@ -48,13 +48,26 @@ export default function DashboardLayout({
 
       switch (result.type) {
         case 'death':
-          toast.error(result.message);
+          system.notify({
+            title: 'ZONA DE PENALIDADE',
+            lines: [result.message],
+            variant: 'penalty',
+            autoCloseMs: 0, // morte fica aberta — exige reconhecimento
+          });
           break;
         case 'damage':
-          toast.warning(result.message);
+          system.notify({
+            title: 'PENALIDADE',
+            lines: [result.message],
+            variant: 'penalty',
+          });
           break;
         case 'heal':
-          toast.success(result.message);
+          system.notify({
+            title: 'RECUPERAÇÃO',
+            lines: [result.message],
+            variant: 'reward',
+          });
           break;
         case 'none':
           toast.info(result.message);
@@ -63,7 +76,7 @@ export default function DashboardLayout({
     }, 1500);
 
     return () => clearTimeout(timer);
-  }, [isLoading, toast]);
+  }, [isLoading, toast, system]);
 
   // Janela do Sistema de boas-vindas — uma vez por sessão
   useEffect(() => {
