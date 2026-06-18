@@ -13,6 +13,7 @@ import { LevelUpModal, usePlayerStats } from '@/features/core-rpg';
 import { runDailyCheck } from '@/features/core-rpg/services/daily-check.service';
 import { useAuth } from '@/shared/providers/AuthProvider';
 import { useToast } from '@/shared/components/Toast';
+import { useSystem } from '@/features/system';
 import styles from './dashboard.module.css';
 
 export default function DashboardLayout({
@@ -24,7 +25,9 @@ export default function DashboardLayout({
   const { stats, isLevelingUp, dismissLevelUp, newLevel } = usePlayerStats();
   const router = useRouter();
   const toast = useToast();
+  const system = useSystem();
   const dailyCheckRan = useRef(false);
+  const welcomedRef = useRef(false);
 
   // Auth guard: redirect to login when Firebase is active but user is not authenticated
   useEffect(() => {
@@ -61,6 +64,28 @@ export default function DashboardLayout({
 
     return () => clearTimeout(timer);
   }, [isLoading, toast]);
+
+  // Janela do Sistema de boas-vindas — uma vez por sessão
+  useEffect(() => {
+    if (welcomedRef.current || isLoading) return;
+    if (isFirebaseMode && !isAuthenticated) return;
+    if (typeof window !== 'undefined' && sessionStorage.getItem('vetor_furia_welcomed')) return;
+    welcomedRef.current = true;
+    if (typeof window !== 'undefined') sessionStorage.setItem('vetor_furia_welcomed', '1');
+
+    const name = isFirebaseMode ? displayName : stats.displayName;
+    const timer = setTimeout(() => {
+      system.notify({
+        title: `Bem-vindo de volta, ${name}`,
+        lines: [
+          `Nível ${stats.level} · ${stats.avatarStage}`,
+          'Suas missões de hoje aguardam, Caçador.',
+        ],
+        variant: 'quest',
+      });
+    }, 900);
+    return () => clearTimeout(timer);
+  }, [isLoading, isAuthenticated, isFirebaseMode, displayName, stats.level, stats.avatarStage, stats.displayName, system]);
 
   // Show nothing while checking auth
   if (isLoading) {
