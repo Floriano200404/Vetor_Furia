@@ -1,0 +1,23 @@
+rules_version = '2';
+
+// Regras de segurança do Firestore — Vetor Fúria.
+// Publique em: Firebase Console > Firestore Database > aba "Regras" > Publicar.
+// Substituem o "modo de teste" (que é inseguro e expira em ~30 dias).
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Sincronização por usuário: só o próprio dono lê/escreve.
+    // Cobre users/{uid} e a subcoleção users/{uid}/app_state/* (o cloud-sync).
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Coleções de apoio do app (gravações redundantes do adapter antigo,
+    // dados não sensíveis de gamificação). A fonte de verdade é
+    // users/{uid}/app_state — estas exigem apenas estar autenticado.
+    match /{collection}/{docId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

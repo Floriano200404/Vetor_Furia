@@ -18,6 +18,8 @@ import {
 } from 'firebase/auth';
 import { auth, isFirebaseConfigured } from '@/lib/firebase/config';
 import { DEFAULT_USER_ID } from '@/lib/constants';
+import { ensureUserScope } from '@/lib/storage/user-scope';
+import { pullFromCloud, startCloudAutoSync, stopCloudAutoSync } from '@/lib/storage/cloud-sync';
 
 interface AuthContextType {
   user: User | null;
@@ -51,9 +53,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+    let syncedUid: string | null = null;
+
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        // Só sincroniza quando a conta muda de fato (evita re-pull no refresh de token).
+        if (firebaseUser.uid !== syncedUid) {
+          ensureUserScope(firebaseUser.uid);      // isola a gaveta por conta
+          await pullFromCloud(firebaseUser.uid);  // traz os dados da nuvem
+          startCloudAutoSync(firebaseUser.uid);   // passa a salvar mudanças na nuvem
+          syncedUid = firebaseUser.uid;
+        }
+        setUser(firebaseUser);
+      } else {
+        stopCloudAutoSync();
+        syncedUid = null;
+        setUser(null);
+      }
+       
       setIsLoading(false);
     });
 
