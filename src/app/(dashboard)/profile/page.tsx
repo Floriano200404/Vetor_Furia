@@ -13,6 +13,7 @@ import { getPlayer, savePlayer, getLedgerEntries } from '@/features/core-rpg/ser
 import type { XPEntry } from '@/features/core-rpg';
 import { BodyAvatar, useBiometry } from '@/features/health';
 import { NotificationSettings } from '@/features/habits';
+import { WhatsAppSettings } from '@/features/system';
 import { HallOfFame } from '@/features/achievements';
 import { ComparisonCard } from '@/features/missions';
 import { useToast } from '@/shared/components/Toast';
@@ -256,6 +257,10 @@ export default function ProfilePage() {
 
       <motion.div variants={itemVariants}>
         <NotificationSettings />
+      </motion.div>
+
+      <motion.div variants={itemVariants}>
+        <WhatsAppSettings />
       </motion.div>
 
       <motion.div variants={itemVariants}>

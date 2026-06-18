@@ -13,7 +13,7 @@ import { LevelUpModal, usePlayerStats } from '@/features/core-rpg';
 import { runDailyCheck } from '@/features/core-rpg/services/daily-check.service';
 import { useAuth } from '@/shared/providers/AuthProvider';
 import { useToast } from '@/shared/components/Toast';
-import { useSystem } from '@/features/system';
+import { useSystem, sendWhatsApp } from '@/features/system';
 import styles from './dashboard.module.css';
 
 export default function DashboardLayout({
@@ -54,6 +54,7 @@ export default function DashboardLayout({
             variant: 'penalty',
             autoCloseMs: 0, // morte fica aberta — exige reconhecimento
           });
+          sendWhatsApp(`💀 ${result.message}`);
           break;
         case 'damage':
           system.notify({
@@ -61,6 +62,7 @@ export default function DashboardLayout({
             lines: [result.message],
             variant: 'penalty',
           });
+          sendWhatsApp(`⚠️ ${result.message}`);
           break;
         case 'heal':
           system.notify({

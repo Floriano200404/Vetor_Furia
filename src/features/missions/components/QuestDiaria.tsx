@@ -13,7 +13,7 @@ import { motion } from 'framer-motion';
 import { Swords, Check, Clock } from 'lucide-react';
 import Link from 'next/link';
 import { useHabits } from '@/features/habits';
-import { useSystem } from '@/features/system';
+import { useSystem, sendWhatsApp } from '@/features/system';
 import styles from './QuestDiaria.module.css';
 
 const THREE_HOURS_MS = 3 * 60 * 60 * 1000;
@@ -66,6 +66,7 @@ export function QuestDiaria() {
         ],
         variant: 'reward',
       });
+      sendWhatsApp(`✅ Quest Diária concluída! Todas as ${total} missões cumpridas, Caçador. ⚔️`);
     }
     wasDoneRef.current = allDone;
   }, [allDone, total, system]);
